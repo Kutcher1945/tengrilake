@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, Variants } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useMemo } from 'react';
 import { 
   Database, 
   Cloud, 
@@ -113,29 +113,57 @@ const cardVariants: Variants = {
 export default function TechnologyShowcase() {
   const ref = useRef(null);
 
+  // Generate consistent floating particle positions
+  const floatingParticles = useMemo(() => {
+    return Array.from({ length: 15 }, (_, i) => {
+      const seed = i * 137.508; // Golden angle for good distribution
+      return {
+        left: ((seed % 360) / 360) * 100,
+        top: ((seed * 1.618 % 360) / 360) * 100,
+        duration: 4 + (i % 3),
+        delay: (i % 5) * 0.4,
+        scale: 0.5 + (i % 3) * 0.23
+      };
+    });
+  }, []);
+
+  // Generate consistent card particle positions for each technology
+  const cardParticles = useMemo(() => {
+    return technologies.map((_, techIndex) => 
+      Array.from({ length: 4 }, (_, particleIndex) => {
+        const seed = techIndex * 47 + particleIndex * 23;
+        return {
+          left: ((seed % 100)),
+          top: ((seed * 1.3 % 100)),
+          delay: particleIndex * 0.2
+        };
+      })
+    );
+  }, []);
+
   return (
     <section className="py-32 bg-gradient-to-b from-black via-slate-950 to-blue-950 relative overflow-hidden" ref={ref}>
       {/* Animated background elements */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-black to-blue-900/30" />
       
-      {/* Floating particles */}
-      {[...Array(15)].map((_, i) => (
+      {/* Floating particles - using consistent positions */}
+      {floatingParticles.map((particle, i) => (
         <motion.div
           key={i}
           className="absolute w-1 h-1 bg-blue-400 rounded-full opacity-40"
           style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
+            left: `${particle.left}%`,
+            top: `${particle.top}%`,
           }}
           animate={{
             y: [-15, 15, -15],
             opacity: [0.2, 0.8, 0.2],
-            scale: [0.5, 1.2, 0.5]
+            scale: [particle.scale, particle.scale + 0.7, particle.scale]
           }}
           transition={{
-            duration: 4 + Math.random() * 3,
+            duration: particle.duration,
             repeat: Infinity,
-            delay: Math.random() * 2,
+            delay: particle.delay,
             ease: [0.4, 0.0, 0.6, 1] as [number, number, number, number]
           }}
         />
@@ -195,6 +223,7 @@ export default function TechnologyShowcase() {
         >
           {technologies.map((tech, index) => {
             const Icon = tech.icon;
+            const particlePositions = cardParticles[index];
             
             return (
               <motion.div
@@ -209,14 +238,14 @@ export default function TechnologyShowcase() {
                 />
 
                 <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl group-hover:border-blue-400/50 transition-all duration-500 overflow-hidden">
-                  {/* Floating particles on hover */}
-                  {[...Array(4)].map((_, particleIndex) => (
+                  {/* Floating particles on hover - using consistent positions */}
+                  {particlePositions.map((particle, particleIndex) => (
                     <motion.div
                       key={particleIndex}
                       className="absolute w-1 h-1 bg-blue-300 rounded-full opacity-0 group-hover:opacity-100"
                       style={{
-                        left: `${Math.random() * 100}%`,
-                        top: `${Math.random() * 100}%`,
+                        left: `${particle.left}%`,
+                        top: `${particle.top}%`,
                       }}
                       animate={{
                         scale: [0, 1, 0],
@@ -225,7 +254,7 @@ export default function TechnologyShowcase() {
                       }}
                       transition={{
                         duration: 1.5,
-                        delay: particleIndex * 0.2,
+                        delay: particle.delay,
                         repeat: Infinity,
                         ease: [0.4, 0.0, 0.6, 1] as [number, number, number, number]
                       }}

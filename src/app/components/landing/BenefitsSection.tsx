@@ -2,11 +2,11 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { 
-  FolderUp, 
-  Workflow, 
-  Database, 
-  GitBranch,
+import {
+   FolderUp,
+   Workflow,
+   Database,
+   GitBranch,
   ArrowRight,
   CheckCircle,
   Clock,
@@ -89,7 +89,7 @@ export default function PipelineExplanationSection() {
     <section className="py-32 bg-gradient-to-b from-black via-slate-950 to-blue-950 relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-black to-blue-900/30" />
-      
+             
       {/* Floating particles */}
       <motion.div>
         {[...Array(12)].map((_, i) => (
@@ -114,7 +114,7 @@ export default function PipelineExplanationSection() {
           />
         ))}
       </motion.div>
-
+       
       {/* Main grid overlay */}
       <div 
         className="absolute inset-0 opacity-10"
@@ -123,7 +123,7 @@ export default function PipelineExplanationSection() {
           backgroundSize: '80px 80px'
         }}
       />
-
+       
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <motion.div
@@ -144,7 +144,7 @@ export default function PipelineExplanationSection() {
               <FileText className="h-8 w-8 text-white" />
             </div>
           </motion.div>
-
+           
           <h2 className="text-5xl md:text-6xl font-black text-white mb-6 leading-tight">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-white to-blue-200">
               How Our ETL Pipeline
@@ -152,18 +152,18 @@ export default function PipelineExplanationSection() {
             <br />
             <span className="text-white">Works</span>
           </h2>
-          
+                     
           <p className="text-xl md:text-2xl text-white/70 max-w-3xl mx-auto leading-relaxed">
             A complete walkthrough of how your data flows from CRM task creation 
             through our intelligent processing pipeline to microservice distribution.
           </p>
         </motion.div>
-
+         
         {/* Process Explanation Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
           {processDetails.map((process, index) => {
             const Icon = process.icon;
-            
+                         
             return (
               <motion.div
                 key={index}
@@ -174,10 +174,30 @@ export default function PipelineExplanationSection() {
                 viewport={{ once: true }}
                 whileHover={{ y: -5 }}
               >
-                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl group-hover:border-blue-400/50 transition-all duration-500">
+                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl group-hover:border-blue-400/50 transition-all duration-500 relative">
                   {/* Subtle glow effect on hover */}
                   <motion.div
                     className="absolute -inset-0.5 bg-gradient-to-r from-blue-500/20 to-blue-300/20 rounded-3xl blur opacity-0 group-hover:opacity-60 transition-opacity duration-700"
+                  />
+                   
+                  {/* Corner accent */}
+                  <motion.div
+                    className="absolute top-4 right-4 w-2 h-2 bg-blue-400 rounded-full"
+                    animate={{
+                      scale: [1, 1.5, 1],
+                      opacity: [0.5, 1, 0.5]
+                    }}
+                    transition={{
+                      duration: 1,
+                      repeat: Infinity,
+                      ease: [0.4, 0.0, 0.6, 1] as [number, number, number, number]
+                    }}
+                  />
+                   
+                  {/* Interactive bottom accent */}
+                  <motion.div
+                    className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-blue-300 rounded-b-3xl opacity-0 group-hover:opacity-100"
+                    transition={{ duration: 0.3 }}
                   />
 
                   {/* Floating particles on hover */}
@@ -209,8 +229,9 @@ export default function PipelineExplanationSection() {
                       />
                     ))}
                   </motion.div>
+
                   {/* Header */}
-                  <div className="flex items-start gap-4 mb-6">
+                  <div className="flex items-start gap-4 mb-6 relative z-10">
                     <motion.div
                       className={`bg-gradient-to-r ${process.gradient} p-4 rounded-2xl shadow-lg border border-white/20 flex-shrink-0`}
                       whileHover={{ scale: 1.1, rotate: 5 }}
@@ -218,31 +239,12 @@ export default function PipelineExplanationSection() {
                     >
                       <Icon className="h-8 w-8 text-white" />
                     </motion.div>
-                    
+                                         
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
                         <span className="text-2xl font-black text-white">{index + 1}</span>
                         <div className="h-px bg-gradient-to-r from-blue-400 to-transparent flex-1" />
-                        {/* Corner accent */}
-                  <motion.div
-                    className="absolute top-4 right-4 w-2 h-2 bg-blue-400 rounded-full"
-                    animate={{
-                      scale: [1, 1.5, 1],
-                      opacity: [0.5, 1, 0.5]
-                    }}
-                    transition={{
-                      duration: 1,
-                      repeat: Infinity,
-                      ease: [0.4, 0.0, 0.6, 1] as [number, number, number, number]
-                    }}
-                  />
-
-                  {/* Interactive bottom accent */}
-                  <motion.div
-                    className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-blue-300 rounded-b-3xl opacity-0 group-hover:opacity-100"
-                    transition={{ duration: 0.3 }}
-                  />
-                </div>
+                      </div>
                       <h3 className="text-xl font-bold text-white mb-2 group-hover:text-blue-300 transition-colors duration-300">
                         {process.title}
                       </h3>
@@ -251,9 +253,9 @@ export default function PipelineExplanationSection() {
                       </p>
                     </div>
                   </div>
-
+                   
                   {/* Process Details */}
-                  <div className="space-y-3 mb-6">
+                  <div className="space-y-3 mb-6 relative z-10">
                     {process.details.map((detail, detailIndex) => (
                       <motion.div
                         key={detailIndex}
@@ -268,14 +270,14 @@ export default function PipelineExplanationSection() {
                       </motion.div>
                     ))}
                   </div>
-
+                   
                   {/* Technology Badge */}
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between relative z-10">
                     <div className="inline-flex items-center gap-2 bg-blue-500/20 border border-blue-400/30 rounded-full px-4 py-2">
                       <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
                       <span className="text-blue-300 text-sm font-medium">{process.tech}</span>
                     </div>
-                    
+                                         
                     {index < processDetails.length - 1 && (
                       <motion.div
                         className="hidden lg:block"
@@ -291,7 +293,7 @@ export default function PipelineExplanationSection() {
             );
           })}
         </div>
-
+         
         {/* Benefits Summary */}
         <motion.div
           className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl relative group"
@@ -304,7 +306,7 @@ export default function PipelineExplanationSection() {
           <motion.div
             className="absolute -inset-0.5 bg-gradient-to-r from-blue-500/10 to-blue-300/10 rounded-3xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-700"
           />
-
+           
           {/* Additional floating particles for the summary */}
           {[...Array(8)].map((_, i) => (
             <motion.div
@@ -327,7 +329,7 @@ export default function PipelineExplanationSection() {
               }}
             />
           ))}
-
+           
           {/* Corner accent for summary */}
           <motion.div
             className="absolute top-4 right-4 w-2 h-2 bg-blue-400 rounded-full"
@@ -341,12 +343,13 @@ export default function PipelineExplanationSection() {
               ease: [0.4, 0.0, 0.6, 1] as [number, number, number, number]
             }}
           />
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center relative z-10">
             <div>
               <h3 className="text-3xl font-bold text-white mb-6">
                 Why This Architecture?
               </h3>
-              
+                             
               <div className="space-y-4">
                 {[
                   { icon: Zap, text: "Lightning-fast processing with parallel workflows" },
@@ -368,7 +371,7 @@ export default function PipelineExplanationSection() {
                 ))}
               </div>
             </div>
-
+             
             <div className="text-center lg:text-right">
               <motion.div
                 className="inline-block bg-gradient-to-r from-blue-600 to-blue-500 p-6 rounded-2xl shadow-xl mb-6"
@@ -377,15 +380,15 @@ export default function PipelineExplanationSection() {
               >
                 <Database className="h-12 w-12 text-white mx-auto" />
               </motion.div>
-              
+                             
               <h4 className="text-2xl font-bold text-white mb-4">
                 Ready to See It in Action?
               </h4>
-              
+                             
               <p className="text-white/70 mb-6">
                 Experience the power of intelligent ETL processing
               </p>
-              
+                             
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Link
                   href="/login"
@@ -395,7 +398,7 @@ export default function PipelineExplanationSection() {
                   <ArrowRight className="h-5 w-5" />
                 </Link>
               </motion.div>
-              
+                             
               <p className="text-white/50 text-sm mt-4">
                 Demo: admin@tengrilake.ai / password123
               </p>
