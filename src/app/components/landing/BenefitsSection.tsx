@@ -28,8 +28,8 @@ interface ProcessDetail {
 const processDetails: ProcessDetail[] = [
   {
     icon: FolderUp,
-    title: 'CRM Task Creation & File Upload',
-    description: 'Your data journey begins when users create tasks in the CRM system and upload files that need processing.',
+    title: 'CRM Task Creation OR File Upload',
+    description: 'Your data journey begins when users create tasks in the CRM system or upload files that need processing.',
     details: [
       'Files are uploaded through the CRM interface',
       'Automatic storage in MinIO S3 for scalability',

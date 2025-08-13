@@ -42,8 +42,8 @@ const processSteps: ProcessStepData[] = [
   {
     id: 'airflow',
     icon: Workflow,
-    title: 'ETL Orchestration',
-    description: 'Data Engineer informed and starting to build ETL pipeline',
+    title: 'ETL Orchestration and Documentation',
+    description: 'Data Engineer informed and starting to build ETL pipeline. After building, the pipeline is documented in the WIKI system.',
     tech: 'Apache Airflow - Data Engineer',
     gradient: 'from-blue-400 to-blue-300'
   },
