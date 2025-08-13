@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Eye, EyeOff, Mail, Lock, BarChart3, Shield, Users, CheckCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Eye, EyeOff, Mail, Lock, BarChart3, Shield, Users, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 interface LoginFormData {
@@ -26,6 +26,12 @@ export default function LoginForm() {
   const [errors, setErrors] = useState<LoginFormErrors>({});
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // Animation mount effect
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const validateForm = (): boolean => {
     const newErrors: LoginFormErrors = {};
@@ -55,26 +61,28 @@ export default function LoginForm() {
     setErrors({});
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Simulate API call with more realistic timing
+      await new Promise(resolve => setTimeout(resolve, 1200));
       
       // Demo credentials check
       if (formData.email === 'admin@crm.com' && formData.password === 'password123') {
-        // Store auth token (in real app, this would come from API)
-        localStorage.setItem('authToken', 'demo-token-123');
-        localStorage.setItem('user', JSON.stringify({
-          id: '1',
-          name: 'Admin User',
-          email: formData.email,
-          role: 'admin'
-        }));
+        // In a real app, avoid localStorage for sensitive data
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem('authToken', 'demo-token-123');
+          sessionStorage.setItem('user', JSON.stringify({
+            id: '1',
+            name: 'Admin User',
+            email: formData.email,
+            role: 'admin'
+          }));
+        }
         
         router.push('/crm');
       } else {
-        setErrors({ general: 'Invalid email or password' });
+        setErrors({ general: 'Invalid email or password. Please check your credentials and try again.' });
       }
     } catch (error) {
-      setErrors({ general: 'Something went wrong. Please try again.' });
+      setErrors({ general: 'Network error. Please check your connection and try again.' });
     } finally {
       setIsLoading(false);
     }
@@ -89,237 +97,278 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex bg-gray-50">
       {/* Left Side - Login Form */}
-      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8">
-        <div className="w-full max-w-md space-y-8">
-          {/* Header */}
-          <div className="text-center">
-            <div className="flex justify-center mb-6">
-              <div className="bg-blue-600 p-3 rounded-full">
-                <BarChart3 className="h-8 w-8 text-white" />
-              </div>
-            </div>
-            <h2 className="text-3xl font-bold text-gray-900">Welcome back</h2>
-            <p className="mt-2 text-sm text-gray-600">
-              Sign in to your CRM account
-            </p>
-          </div>
-
-          {/* Demo Credentials */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <h3 className="text-sm font-medium text-blue-800 mb-2">Demo Credentials</h3>
-            <div className="text-xs text-blue-700 space-y-1">
-              <p><strong>Email:</strong> admin@crm.com</p>
-              <p><strong>Password:</strong> password123</p>
-            </div>
-          </div>
-
-          {/* Login Form */}
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            {/* General Error */}
-            {errors.general && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                <p className="text-sm text-red-600">{errors.general}</p>
-              </div>
-            )}
-
-            {/* Email Field */}
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email address
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-400" />
+      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-white lg:bg-gray-50">
+        <div className={`w-full max-w-md transition-all duration-700 ${
+          mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}>
+          <div className="bg-white lg:shadow-xl lg:border lg:border-gray-100 rounded-2xl p-8 lg:p-10">
+            {/* Header */}
+            <div className="text-center mb-8">
+              <div className="flex justify-center mb-6">
+                <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-3 rounded-2xl shadow-lg transform hover:scale-105 transition-transform duration-200">
+                  <BarChart3 className="h-8 w-8 text-white" />
                 </div>
-                <input
-                  id="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => handleInputChange('email', e.target.value)}
-                  className={`block w-full pl-10 pr-3 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                    errors.email 
-                      ? 'border-red-300 bg-red-50' 
-                      : 'border-gray-300 bg-white'
-                  }`}
-                  placeholder="Enter your email"
-                  disabled={isLoading}
-                />
               </div>
-              {errors.email && (
-                <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome back</h1>
+              <p className="text-gray-600">
+                Sign in to your CRM account to continue
+              </p>
+            </div>
+
+            {/* Demo Credentials */}
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 mb-6">
+              <div className="flex items-center mb-2">
+                <div className="bg-blue-100 p-1 rounded-lg mr-2">
+                  <AlertCircle className="h-4 w-4 text-blue-600" />
+                </div>
+                <h3 className="text-sm font-semibold text-blue-900">Demo Credentials</h3>
+              </div>
+              <div className="text-xs text-blue-800 space-y-1 font-mono bg-white/50 rounded-lg p-3">
+                <p><strong>Email:</strong> admin@crm.com</p>
+                <p><strong>Password:</strong> password123</p>
+              </div>
+            </div>
+
+            {/* Login Form */}
+            <form className="space-y-6" onSubmit={handleSubmit} noValidate>
+              {/* General Error */}
+              {errors.general && (
+                <div className="bg-red-50 border-l-4 border-red-400 rounded-lg p-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                  <div className="flex items-center">
+                    <AlertCircle className="h-5 w-5 text-red-400 mr-2" />
+                    <p className="text-sm text-red-700">{errors.general}</p>
+                  </div>
+                </div>
               )}
-            </div>
 
-            {/* Password Field */}
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                Password
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
+              {/* Email Field */}
+              <div className="space-y-2">
+                <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
+                  Email address
+                </label>
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Mail className={`h-5 w-5 transition-colors duration-200 ${
+                      errors.email ? 'text-red-400' : 'text-gray-400 group-focus-within:text-blue-500'
+                    }`} />
+                  </div>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    value={formData.email}
+                    onChange={(e) => handleInputChange('email', e.target.value)}
+                    className={`block w-full pl-10 pr-3 py-3 border rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-gray-900 placeholder-gray-500 ${
+                      errors.email 
+                        ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-red-500/20' 
+                        : 'border-gray-300 bg-white hover:border-gray-400'
+                    }`}
+                    placeholder="Enter your email address"
+                    disabled={isLoading}
+                    aria-invalid={!!errors.email}
+                    aria-describedby={errors.email ? 'email-error' : undefined}
+                  />
                 </div>
-                <input
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  value={formData.password}
-                  onChange={(e) => handleInputChange('password', e.target.value)}
-                  className={`block w-full pl-10 pr-10 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                    errors.password 
-                      ? 'border-red-300 bg-red-50' 
-                      : 'border-gray-300 bg-white'
-                  }`}
-                  placeholder="Enter your password"
-                  disabled={isLoading}
-                />
+                {errors.email && (
+                  <p id="email-error" className="text-sm text-red-600 animate-in fade-in slide-in-from-top-1 duration-200">
+                    {errors.email}
+                  </p>
+                )}
+              </div>
+
+              {/* Password Field */}
+              <div className="space-y-2">
+                <label htmlFor="password" className="block text-sm font-semibold text-gray-700">
+                  Password
+                </label>
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Lock className={`h-5 w-5 transition-colors duration-200 ${
+                      errors.password ? 'text-red-400' : 'text-gray-400 group-focus-within:text-blue-500'
+                    }`} />
+                  </div>
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? 'text' : 'password'}
+                    autoComplete="current-password"
+                    required
+                    value={formData.password}
+                    onChange={(e) => handleInputChange('password', e.target.value)}
+                    className={`block w-full pl-10 pr-12 py-3 border rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-gray-900 placeholder-gray-500 ${
+                      errors.password 
+                        ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-red-500/20' 
+                        : 'border-gray-300 bg-white hover:border-gray-400'
+                    }`}
+                    placeholder="Enter your password"
+                    disabled={isLoading}
+                    aria-invalid={!!errors.password}
+                    aria-describedby={errors.password ? 'password-error' : undefined}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center hover:bg-gray-50 rounded-r-xl transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                    disabled={isLoading}
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    ) : (
+                      <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    )}
+                  </button>
+                </div>
+                {errors.password && (
+                  <p id="password-error" className="text-sm text-red-600 animate-in fade-in slide-in-from-top-1 duration-200">
+                    {errors.password}
+                  </p>
+                )}
+              </div>
+
+              {/* Remember Me & Forgot Password */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <input
+                    id="remember-me"
+                    name="remember-me"
+                    type="checkbox"
+                    checked={formData.rememberMe}
+                    onChange={(e) => handleInputChange('rememberMe', e.target.checked)}
+                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded transition-colors duration-200"
+                    disabled={isLoading}
+                  />
+                  <label htmlFor="remember-me" className="ml-3 block text-sm text-gray-700 select-none">
+                    Remember me for 30 days
+                  </label>
+                </div>
                 <button
                   type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  className="text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors duration-200 focus:outline-none focus:underline"
                   disabled={isLoading}
                 >
-                  {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                  ) : (
-                    <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                  )}
+                  Forgot password?
                 </button>
               </div>
-              {errors.password && (
-                <p className="mt-1 text-sm text-red-600">{errors.password}</p>
-              )}
-            </div>
 
-            {/* Remember Me & Forgot Password */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  type="checkbox"
-                  checked={formData.rememberMe}
-                  onChange={(e) => handleInputChange('rememberMe', e.target.checked)}
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                  disabled={isLoading}
-                />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                  Remember me
-                </label>
-              </div>
+              {/* Submit Button */}
               <button
-                type="button"
-                className="text-sm text-blue-600 hover:text-blue-500 font-medium"
+                type="submit"
                 disabled={isLoading}
+                className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]"
               >
-                Forgot password?
+                {isLoading ? (
+                  <>
+                    <Loader2 className="animate-spin h-4 w-4 mr-2" />
+                    Signing you in...
+                  </>
+                ) : (
+                  'Sign in to CRM'
+                )}
               </button>
+            </form>
+
+            {/* Footer */}
+            <div className="text-center mt-8 pt-6 border-t border-gray-100">
+              <p className="text-sm text-gray-600">
+                Don't have an account?{' '}
+                <button className="font-semibold text-blue-600 hover:text-blue-700 transition-colors duration-200 focus:outline-none focus:underline">
+                  Contact your administrator
+                </button>
+              </p>
             </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
-              {isLoading ? (
-                <div className="flex items-center">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Signing in...
-                </div>
-              ) : (
-                'Sign in'
-              )}
-            </button>
-          </form>
-
-          {/* Footer */}
-          <div className="text-center">
-            <p className="text-sm text-gray-600">
-              Don't have an account?{' '}
-              <button className="font-medium text-blue-600 hover:text-blue-500">
-                Contact your administrator
-              </button>
-            </p>
           </div>
         </div>
       </div>
 
       {/* Right Side - Features/Benefits */}
-      <div className="hidden lg:flex lg:flex-1 bg-blue-600 text-white">
-        <div className="flex flex-col justify-center px-12 py-12">
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold mb-4">
-              Streamline Your Business
+      <div className="hidden lg:flex lg:flex-1 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 left-0 w-full h-full" style={{
+            backgroundImage: `radial-gradient(circle at 25% 25%, white 2px, transparent 2px)`,
+            backgroundSize: '50px 50px'
+          }}></div>
+        </div>
+
+        <div className="flex flex-col justify-center px-12 py-12 relative z-10">
+          <div className={`mb-12 transition-all duration-1000 delay-300 ${
+            mounted ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
+          }`}>
+            <h2 className="text-4xl font-bold mb-4 leading-tight">
+              Transform Your <br />
+              <span className="text-blue-200">Business Operations</span>
             </h2>
-            <p className="text-blue-100 text-lg">
-              Manage your customers, tasks, and deals all in one powerful platform.
+            <p className="text-blue-100 text-lg leading-relaxed">
+              Streamline customer relationships, boost productivity, and drive growth with our comprehensive CRM platform.
             </p>
           </div>
 
-          <div className="space-y-6">
-            <div className="flex items-start space-x-4">
-              <div className="bg-blue-500 p-2 rounded-lg">
-                <Users className="h-6 w-6" />
+          <div className={`space-y-8 mb-12 transition-all duration-1000 delay-500 ${
+            mounted ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
+          }`}>
+            {[
+              {
+                icon: Users,
+                title: 'Smart Contact Management',
+                description: 'Centralize customer data with intelligent insights and automated workflows.'
+              },
+              {
+                icon: CheckCircle,
+                title: 'Advanced Task Automation',
+                description: 'Streamline operations with AI-powered task prioritization and scheduling.'
+              },
+              {
+                icon: BarChart3,
+                title: 'Real-time Analytics',
+                description: 'Make data-driven decisions with comprehensive reporting and forecasting.'
+              },
+              {
+                icon: Shield,
+                title: 'Enterprise Security',
+                description: 'Bank-level encryption and compliance with industry standards.'
+              }
+            ].map((feature, index) => (
+              <div 
+                key={feature.title}
+                className={`flex items-start space-x-4 group transition-all duration-500 delay-${700 + index * 100} ${
+                  mounted ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
+                }`}
+              >
+                <div className="bg-blue-500/50 backdrop-blur-sm p-3 rounded-xl group-hover:bg-blue-400/60 transition-all duration-300 group-hover:scale-110">
+                  <feature.icon className="h-6 w-6" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-100 transition-colors duration-300">
+                    {feature.title}
+                  </h3>
+                  <p className="text-blue-100/90 text-sm leading-relaxed">
+                    {feature.description}
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 className="font-semibold mb-1">Contact Management</h3>
-                <p className="text-blue-100 text-sm">
-                  Organize and track all your customer interactions in one place.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start space-x-4">
-              <div className="bg-blue-500 p-2 rounded-lg">
-                <CheckCircle className="h-6 w-6" />
-              </div>
-              <div>
-                <h3 className="font-semibold mb-1">Task Tracking</h3>
-                <p className="text-blue-100 text-sm">
-                  Stay on top of your to-dos with priority-based task management.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start space-x-4">
-              <div className="bg-blue-500 p-2 rounded-lg">
-                <BarChart3 className="h-6 w-6" />
-              </div>
-              <div>
-                <h3 className="font-semibold mb-1">Analytics Dashboard</h3>
-                <p className="text-blue-100 text-sm">
-                  Get insights into your business performance with detailed reports.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start space-x-4">
-              <div className="bg-blue-500 p-2 rounded-lg">
-                <Shield className="h-6 w-6" />
-              </div>
-              <div>
-                <h3 className="font-semibold mb-1">Secure & Reliable</h3>
-                <p className="text-blue-100 text-sm">
-                  Your data is protected with enterprise-grade security.
-                </p>
-              </div>
-            </div>
+            ))}
           </div>
 
-          <div className="mt-12 pt-8 border-t border-blue-500">
+          <div className={`pt-8 border-t border-blue-500/30 transition-all duration-1000 delay-1000 ${
+            mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          }`}>
             <div className="grid grid-cols-3 gap-8 text-center">
-              <div>
-                <div className="text-2xl font-bold">10K+</div>
-                <div className="text-blue-100 text-sm">Active Users</div>
+              <div className="group">
+                <div className="text-3xl font-bold mb-2 group-hover:scale-110 transition-transform duration-300">50K+</div>
+                <div className="text-blue-200 text-sm font-medium">Happy Customers</div>
               </div>
-              <div>
-                <div className="text-2xl font-bold">99.9%</div>
-                <div className="text-blue-100 text-sm">Uptime</div>
+              <div className="group">
+                <div className="text-3xl font-bold mb-2 group-hover:scale-110 transition-transform duration-300">99.9%</div>
+                <div className="text-blue-200 text-sm font-medium">Uptime SLA</div>
               </div>
-              <div>
-                <div className="text-2xl font-bold">24/7</div>
-                <div className="text-blue-100 text-sm">Support</div>
+              <div className="group">
+                <div className="text-3xl font-bold mb-2 group-hover:scale-110 transition-transform duration-300">24/7</div>
+                <div className="text-blue-200 text-sm font-medium">Expert Support</div>
               </div>
             </div>
           </div>
