@@ -82,7 +82,7 @@ export function ProcessStep({ step, index, isActive, isInView }: ProcessStepProp
     }
     if (index === currentActiveStep) {
       // Current step is processing
-      if (index === 0) return { label: 'Uploading Files', icon: Zap, color: 'blue' };
+      if (index === 0) return { label: 'Creating task/Uploading files', icon: Zap, color: 'blue' };
       if (index === 1) return { label: 'Processing ETL', icon: Zap, color: 'blue' };
       if (index === 2) return { label: 'Storing Data', icon: Zap, color: 'blue' };
       if (index === 3) return { label: 'Streaming Data', icon: Zap, color: 'blue' };

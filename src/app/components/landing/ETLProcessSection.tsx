@@ -34,17 +34,17 @@ const processSteps: ProcessStepData[] = [
   {
     id: 'crm',
     icon: FolderUp,
-    title: 'Task Creation & Upload',
+    title: 'Task Creation Or Upload',
     description: 'Files submitted through CRM task creation system',
-    tech: 'MinIO S3 Storage',
+    tech: 'MinIO S3 Storage/Task Creation',
     gradient: 'from-blue-500 to-blue-400'
   },
   {
     id: 'airflow',
     icon: Workflow,
     title: 'ETL Orchestration',
-    description: 'Airflow detects files and initiates ETL pipeline',
-    tech: 'Apache Airflow',
+    description: 'Data Engineer informed and starting to build ETL pipeline',
+    tech: 'Apache Airflow - Data Engineer',
     gradient: 'from-blue-400 to-blue-300'
   },
   {
@@ -52,7 +52,7 @@ const processSteps: ProcessStepData[] = [
     icon: Database,
     title: 'Raw Data Storage',
     description: 'Processed data stored in high-performance analytics DB',
-    tech: 'ClickHouse',
+    tech: 'ETL to ClickHouse',
     gradient: 'from-blue-300 to-white'
   },
   {
