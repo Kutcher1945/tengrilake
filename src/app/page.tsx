@@ -6,7 +6,7 @@ import { isAuthenticated } from '@/app/lib/auth';
 import LandingNav from '@/app/components/landing/LandingNav';
 import HeroSection from '@/app/components/landing/HeroSection';
 import FeaturesSection from '@/app/components/landing/FeaturesSection';
-import StatsSection from '@/app/components/landing/StatsSection';
+import ETLProcessSection from '@/app/components/landing/ETLProcessSection';
 import BenefitsSection from '@/app/components/landing/BenefitsSection';
 import TestimonialsSection from '@/app/components/landing/TestimonialsSection';
 import LandingFooter from '@/app/components/landing/LandingFooter';
@@ -26,7 +26,7 @@ export default function Home() {
       <LandingNav />
       <HeroSection />
       <FeaturesSection />
-      <StatsSection />
+      <ETLProcessSection />
       <BenefitsSection />
       <TestimonialsSection />
       <LandingFooter />
