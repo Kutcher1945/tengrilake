@@ -1,6 +1,21 @@
 import { motion } from 'framer-motion';
+import { useMemo } from 'react';
 
 export function BackgroundElements() {
+  // Generate consistent particle positions using deterministic values
+  const particles = useMemo(() => {
+    return Array.from({ length: 12 }, (_, i) => {
+      const seed = i * 137.508; // Golden angle for good distribution
+      return {
+        left: ((seed % 360) / 360) * 100,
+        top: ((seed * 1.618 % 360) / 360) * 100,
+        duration: 4 + (i % 3),
+        delay: (i % 4) * 0.75,
+        type: i % 3 // 0, 1, or 2 for different particle types
+      };
+    });
+  }, []);
+
   return (
     <>
       {/* Animated background - Changed to lighter gradient */}
@@ -18,20 +33,20 @@ export function BackgroundElements() {
         }}
       />
 
-      {/* Floating particles - Added variety */}
-      {[...Array(12)].map((_, i) => (
+      {/* Floating particles - Added variety with consistent positions */}
+      {particles.map((particle, i) => (
         <motion.div
           key={i}
           className={`absolute rounded-full ${
-            i % 3 === 0 
+            particle.type === 0
               ? 'w-1 h-1 bg-blue-300 opacity-50' 
-              : i % 3 === 1 
+              : particle.type === 1
               ? 'w-0.5 h-0.5 bg-white opacity-60' 
               : 'w-1.5 h-1.5 bg-blue-400 opacity-40'
           }`}
           style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
+            left: `${particle.left}%`,
+            top: `${particle.top}%`,
           }}
           animate={{
             y: [-15, 15, -15],
@@ -40,9 +55,9 @@ export function BackgroundElements() {
             scale: [0.5, 1.2, 0.5]
           }}
           transition={{
-            duration: 4 + Math.random() * 3,
+            duration: particle.duration,
             repeat: Infinity,
-            delay: Math.random() * 3,
+            delay: particle.delay,
             ease: [0.4, 0.0, 0.6, 1] as [number, number, number, number]
           }}
         />
