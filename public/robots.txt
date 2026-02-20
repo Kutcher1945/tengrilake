@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Disallow internal app routes
+Disallow: /crm
+Disallow: /login
+Disallow: /tracker
+Disallow: /api/
+
+Sitemap: https://www.tengrilake.com/sitemap.xml

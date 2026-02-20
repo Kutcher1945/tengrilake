@@ -5,16 +5,19 @@ import { useRouter } from 'next/navigation';
 import { isAuthenticated } from '@/app/lib/auth';
 import LandingNav from '@/app/components/landing/LandingNav';
 import HeroSection from '@/app/components/landing/HeroSection';
-import FeaturesSection from '@/app/components/landing/FeaturesSection';
-import ETLProcessSection from '@/app/components/landing/ETLProcessSection';
-import BenefitsSection from '@/app/components/landing/BenefitsSection';
-import TestimonialsSection from '@/app/components/landing/TestimonialsSection';
+import ProblemSection from '@/app/components/landing/ProblemSection';
+import SolutionSection from '@/app/components/landing/SolutionSection';
+import ArchitectureSection from '@/app/components/landing/ArchitectureSection';
+import UseCasesSection from '@/app/components/landing/UseCasesSection';
+import DifferentiationSection from '@/app/components/landing/DifferentiationSection';
+import PublicValueSection from '@/app/components/landing/PublicValueSection';
+import FAQSection from '@/app/components/landing/FAQSection';
+import FinalCTASection from '@/app/components/landing/FinalCTASection';
 import LandingFooter from '@/app/components/landing/LandingFooter';
 
 export default function Home() {
   const router = useRouter();
 
-  // Redirect to tracker if already authenticated
   useEffect(() => {
     if (isAuthenticated()) {
       router.push('/tracker');
@@ -22,13 +25,17 @@ export default function Home() {
   }, [router]);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       <LandingNav />
       <HeroSection />
-      <FeaturesSection />
-      <ETLProcessSection />
-      <BenefitsSection />
-      <TestimonialsSection />
+      <ProblemSection />
+      <SolutionSection />
+      <ArchitectureSection />
+      <UseCasesSection />
+      <DifferentiationSection />
+      <PublicValueSection />
+      <FAQSection />
+      <FinalCTASection />
       <LandingFooter />
     </div>
   );
