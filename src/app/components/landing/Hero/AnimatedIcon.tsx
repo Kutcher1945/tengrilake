@@ -1,5 +1,6 @@
 import { motion, AnimatePresence, Variants } from 'framer-motion';
-import { Database, Zap, Brain, Network } from 'lucide-react';
+import { Zap, Brain, Network } from 'lucide-react';
+import Image from 'next/image';
 
 interface AnimatedIconProps {
   isHovered: boolean;
@@ -9,38 +10,34 @@ interface AnimatedIconProps {
 
 const glowVariants: Variants = {
   animate: {
-    scale: [1, 1.2, 1],
-    opacity: [0.3, 0.8, 0.3],
+    scale: [1, 1.25, 1],
+    opacity: [0.2, 0.5, 0.2],
     transition: {
       duration: 4,
       repeat: Infinity,
-      ease: [0.4, 0.0, 0.6, 1] as [number, number, number, number]
-    }
-  }
+      ease: [0.4, 0.0, 0.6, 1] as [number, number, number, number],
+    },
+  },
 };
 
 const pulseVariants: Variants = {
   animate: {
-    scale: [1, 1.05, 1],
+    scale: [1, 1.04, 1],
     transition: {
-      duration: 2,
+      duration: 2.5,
       repeat: Infinity,
-      ease: [0.4, 0.0, 0.6, 1] as [number, number, number, number]
-    }
-  }
+      ease: [0.4, 0.0, 0.6, 1] as [number, number, number, number],
+    },
+  },
 };
 
 const magneticVariants: Variants = {
   hover: {
-    scale: 1.1,
-    rotateY: 15,
-    rotateX: 5,
-    transition: {
-      type: "spring",
-      stiffness: 300,
-      damping: 20
-    }
-  }
+    scale: 1.08,
+    rotateY: 12,
+    rotateX: 4,
+    transition: { type: 'spring', stiffness: 300, damping: 20 },
+  },
 };
 
 export function AnimatedIcon({ isHovered, setIsHovered, mousePosition }: AnimatedIconProps) {
@@ -52,37 +49,50 @@ export function AnimatedIcon({ isHovered, setIsHovered, mousePosition }: Animate
       whileHover="hover"
       variants={magneticVariants}
     >
-      {/* Glow effect */}
+      {/* Outer glow — cyan */}
       <motion.div
-        className="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-300 rounded-3xl blur-2xl"
+        className="absolute inset-0 bg-cyan-400/30 blur-2xl"
         variants={glowVariants}
         animate="animate"
       />
-      
-      {/* Main icon container */}
+
+      {/* Corner accent lines */}
+      <div className="absolute -top-2 -left-2 w-4 h-4 border-t-2 border-l-2 border-cyan-400/70" />
+      <div className="absolute -top-2 -right-2 w-4 h-4 border-t-2 border-r-2 border-cyan-400/70" />
+      <div className="absolute -bottom-2 -left-2 w-4 h-4 border-b-2 border-l-2 border-cyan-400/70" />
+      <div className="absolute -bottom-2 -right-2 w-4 h-4 border-b-2 border-r-2 border-cyan-400/70" />
+
+      {/* Main icon container — sharp, dark with cyan accent */}
       <motion.div
-        className="relative bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 p-6 rounded-3xl shadow-2xl backdrop-blur-sm border border-white/20"
+        className="relative bg-gradient-to-br from-gray-900 via-black to-gray-900 px-10 py-8 shadow-2xl border border-cyan-400/25"
         variants={pulseVariants}
         animate="animate"
         style={{
-          transform: `perspective(1000px) rotateX(${mousePosition.y * 0.5}deg) rotateY(${mousePosition.x * 0.5}deg)`
+          transform: `perspective(1000px) rotateX(${mousePosition.y * 0.4}deg) rotateY(${mousePosition.x * 0.4}deg)`,
         }}
       >
         <motion.div
-          animate={isHovered ? { rotate: 360, scale: 1.1 } : { rotate: 0, scale: 1 }}
-                      transition={{ duration: 0.6, ease: [0.4, 0.0, 0.2, 1] as [number, number, number, number] }}
+          animate={isHovered ? { scale: 1.08 } : { scale: 1 }}
+          transition={{ duration: 0.4, ease: [0.4, 0.0, 0.2, 1] as [number, number, number, number] }}
         >
-          <Database className="h-16 w-16 text-white drop-shadow-lg" />
+          <Image
+            src="/logo/logo-white-letters.png"
+            alt="TengriLake AI"
+            width={1280}
+            height={720}
+            className="object-contain"
+            style={{ filter: 'drop-shadow(0 0 8px rgba(6,182,212,0.5))' }}
+          />
         </motion.div>
-        
-        {/* Orbiting elements */}
+
+        {/* Orbiting elements on hover */}
         <AnimatePresence>
           {isHovered && (
             <>
               {[Zap, Brain, Network].map((Icon, index) => (
                 <motion.div
                   key={index}
-                  className="absolute text-white/80"
+                  className="absolute text-cyan-300/80"
                   initial={{ scale: 0, rotate: 0 }}
                   animate={{
                     scale: 1,
@@ -91,13 +101,9 @@ export function AnimatedIcon({ isHovered, setIsHovered, mousePosition }: Animate
                     y: Math.sin((index * 120) * Math.PI / 180) * 60,
                   }}
                   exit={{ scale: 0, rotate: 0, x: 0, y: 0 }}
-                  transition={{ 
-                    duration: 0.5,
-                    delay: index * 0.1,
-                    ease: "backOut"
-                  }}
+                  transition={{ duration: 0.4, delay: index * 0.08, ease: 'backOut' }}
                 >
-                  <Icon className="h-6 w-6" />
+                  <Icon className="h-5 w-5" />
                 </motion.div>
               ))}
             </>

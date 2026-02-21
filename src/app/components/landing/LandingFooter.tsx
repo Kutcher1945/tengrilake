@@ -11,19 +11,23 @@ export default function LandingFooter() {
   };
 
   return (
-    <footer className="bg-gradient-to-b from-slate-950 to-black relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 via-black to-blue-900/10" />
-
-      {/* Grid overlay */}
+    <footer className="bg-slate-950 relative overflow-hidden">
+      {/* Grid overlay — same pattern as FinalCTASection, no seam */}
       <div
-        className="absolute inset-0 opacity-5"
+        className="absolute inset-0 opacity-[0.035]"
         style={{
-          backgroundImage: `radial-gradient(circle at 2px 2px, rgba(59, 130, 246, 0.3) 1px, transparent 0)`,
-          backgroundSize: '60px 60px'
+          backgroundImage: `
+            linear-gradient(rgba(6,182,212,1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(6,182,212,1) 1px, transparent 1px)
+          `,
+          backgroundSize: '60px 60px',
         }}
       />
+      {/* Fade to black at very bottom */}
+      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent to-black" />
+      {/* No top separator — bleeds into FinalCTASection above */}
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 py-16">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 pt-10 pb-16">
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 mb-12">
 
@@ -72,27 +76,27 @@ export default function LandingFooter() {
             >
               <a
                 href="mailto:r.barmashyov@almatydc.kz"
-                className="group flex items-center gap-3 text-white/60 hover:text-blue-400 transition-colors duration-200"
+                className="group flex items-center gap-3 text-white/60 hover:text-cyan-400 transition-colors duration-200"
               >
-                <div className="p-2 rounded-lg bg-white/5 border border-white/10 group-hover:border-blue-400/40 transition-colors">
+                <div className="p-2 rounded-lg bg-white/5 border border-white/10 group-hover:border-cyan-400/30 transition-colors">
                   <Mail className="h-4 w-4" />
                 </div>
                 <span className="text-sm">r.barmashyov@almatydc.kz</span>
               </a>
               <a
                 href="tel:+77012270055"
-                className="group flex items-center gap-3 text-white/60 hover:text-blue-400 transition-colors duration-200"
+                className="group flex items-center gap-3 text-white/60 hover:text-cyan-400 transition-colors duration-200"
               >
-                <div className="p-2 rounded-lg bg-white/5 border border-white/10 group-hover:border-blue-400/40 transition-colors">
+                <div className="p-2 rounded-lg bg-white/5 border border-white/10 group-hover:border-cyan-400/30 transition-colors">
                   <Phone className="h-4 w-4" />
                 </div>
                 <span className="text-sm">+7 701 227 0055</span>
               </a>
               <a
                 href="#"
-                className="group flex items-center gap-3 text-white/60 hover:text-blue-400 transition-colors duration-200"
+                className="group flex items-center gap-3 text-white/60 hover:text-cyan-400 transition-colors duration-200"
               >
-                <div className="p-2 rounded-lg bg-white/5 border border-white/10 group-hover:border-blue-400/40 transition-colors">
+                <div className="p-2 rounded-lg bg-white/5 border border-white/10 group-hover:border-cyan-400/30 transition-colors">
                   <Linkedin className="h-4 w-4" />
                 </div>
                 <span className="text-sm">LinkedIn</span>
@@ -124,7 +128,7 @@ export default function LandingFooter() {
                 >
                   <a
                     href={link.href}
-                    className="group flex items-center text-white/60 hover:text-blue-400 transition-colors duration-300 text-sm"
+                    className="group flex items-center text-white/60 hover:text-cyan-400 transition-colors duration-300 text-sm"
                   >
                     <span className="group-hover:translate-x-1 transition-transform duration-300">
                       {link.label}
@@ -158,7 +162,7 @@ export default function LandingFooter() {
                 >
                   <Link
                     href={link.href}
-                    className="group flex items-center text-white/60 hover:text-blue-400 transition-colors duration-300 text-sm"
+                    className="group flex items-center text-white/60 hover:text-cyan-400 transition-colors duration-300 text-sm"
                   >
                     <span className="group-hover:translate-x-1 transition-transform duration-300">
                       {link.label}
@@ -185,7 +189,7 @@ export default function LandingFooter() {
 
             <motion.button
               onClick={scrollToTop}
-              className="group flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-blue-400/50 rounded-xl px-4 py-2 text-white/60 hover:text-blue-400 transition-all duration-300"
+              className="group flex items-center gap-2 bg-white/5 hover:bg-white/[0.08] border border-white/10 hover:border-cyan-400/40 px-4 py-2 text-white/50 hover:text-cyan-400 transition-all duration-200"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
             >

@@ -86,44 +86,20 @@ const processDetails: ProcessDetail[] = [
 
 export default function PipelineExplanationSection() {
   return (
-    <section className="py-32 bg-gradient-to-b from-black via-slate-950 to-blue-950 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-black to-blue-900/30" />
-             
-      {/* Floating particles */}
-      <motion.div>
-        {[...Array(12)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-2 h-2 bg-blue-400 rounded-full opacity-30"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              y: [-20, 20, -20],
-              opacity: [0.2, 0.8, 0.2],
-              scale: [0.5, 1, 0.5]
-            }}
-            transition={{
-              duration: 4 + Math.random() * 2,
-              repeat: Infinity,
-              delay: Math.random() * 2,
-              ease: [0.4, 0.0, 0.6, 1] as [number, number, number, number]
-            }}
-          />
-        ))}
-      </motion.div>
-       
-      {/* Main grid overlay */}
-      <div 
-        className="absolute inset-0 opacity-10"
+    <section className="py-32 bg-slate-950 relative overflow-hidden">
+      {/* Grid overlay — no Math.random, SSR-safe */}
+      <div
+        className="absolute inset-0 opacity-[0.04]"
         style={{
-          backgroundImage: `radial-gradient(circle at 2px 2px, rgba(59, 130, 246, 0.3) 1px, transparent 0)`,
-          backgroundSize: '80px 80px'
+          backgroundImage: `
+            linear-gradient(rgba(6,182,212,1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(6,182,212,1) 1px, transparent 1px)
+          `,
+          backgroundSize: '60px 60px',
         }}
       />
-       
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent" />
+
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <motion.div
@@ -133,158 +109,100 @@ export default function PipelineExplanationSection() {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <motion.div
-            className="inline-flex items-center justify-center mb-6"
-            initial={{ scale: 0, rotate: -180 }}
-            whileInView={{ scale: 1, rotate: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, type: "spring", stiffness: 200 }}
-            viewport={{ once: true }}
-          >
-            <div className="bg-gradient-to-r from-blue-600 to-blue-400 p-4 rounded-2xl shadow-xl border border-white/20">
-              <FileText className="h-8 w-8 text-white" />
-            </div>
-          </motion.div>
-           
+          <div className="inline-flex mb-6 border border-cyan-400/30 bg-cyan-400/5 p-4">
+            <FileText className="h-8 w-8 text-cyan-400" />
+          </div>
+
+          <span className="block text-cyan-400 font-mono text-xs uppercase tracking-[0.3em] mb-4">
+            ETL Pipeline
+          </span>
+
           <h2 className="text-5xl md:text-6xl font-black text-white mb-6 leading-tight">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-white to-blue-200">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-white to-blue-300">
               How Our ETL Pipeline
             </span>
-            <br />
+            {' '}
             <span className="text-white">Works</span>
           </h2>
-                     
-          <p className="text-xl md:text-2xl text-white/70 max-w-3xl mx-auto leading-relaxed">
-            A complete walkthrough of how your data flows from CRM task creation 
+
+          <p className="text-xl text-white/50 max-w-3xl mx-auto leading-relaxed">
+            A complete walkthrough of how your data flows from CRM task creation
             through our intelligent processing pipeline to microservice distribution.
           </p>
         </motion.div>
-         
+
         {/* Process Explanation Cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
           {processDetails.map((process, index) => {
             const Icon = process.icon;
-                         
+
             return (
               <motion.div
                 key={index}
                 className="relative group"
-                initial={{ opacity: 0, y: 50 }}
+                initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
+                transition={{ duration: 0.6, delay: index * 0.15 }}
                 viewport={{ once: true }}
-                whileHover={{ y: -5 }}
+                whileHover={{ y: -4 }}
               >
-                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl group-hover:border-blue-400/50 transition-all duration-500 relative">
-                  {/* Subtle glow effect on hover */}
+                <div className="bg-white/[0.02] border border-white/8 p-8 group-hover:border-cyan-400/30 transition-all duration-300 relative overflow-hidden">
+                  {/* Corner pulse dot */}
                   <motion.div
-                    className="absolute -inset-0.5 bg-gradient-to-r from-blue-500/20 to-blue-300/20 rounded-3xl blur opacity-0 group-hover:opacity-60 transition-opacity duration-700"
-                  />
-                   
-                  {/* Corner accent */}
-                  <motion.div
-                    className="absolute top-4 right-4 w-2 h-2 bg-blue-400 rounded-full"
-                    animate={{
-                      scale: [1, 1.5, 1],
-                      opacity: [0.5, 1, 0.5]
-                    }}
-                    transition={{
-                      duration: 1,
-                      repeat: Infinity,
-                      ease: [0.4, 0.0, 0.6, 1] as [number, number, number, number]
-                    }}
-                  />
-                   
-                  {/* Interactive bottom accent */}
-                  <motion.div
-                    className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-blue-300 rounded-b-3xl opacity-0 group-hover:opacity-100"
-                    transition={{ duration: 0.3 }}
+                    className="absolute top-4 right-4 w-1.5 h-1.5 bg-cyan-400"
+                    animate={{ opacity: [0.4, 1, 0.4] }}
+                    transition={{ duration: 2, repeat: Infinity }}
                   />
 
-                  {/* Floating particles on hover */}
-                  <motion.div
-                    className="absolute inset-0 pointer-events-none"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                  >
-                    {[...Array(6)].map((_, particleIndex) => (
-                      <motion.div
-                        key={particleIndex}
-                        className="absolute w-1 h-1 bg-blue-300 rounded-full opacity-0 group-hover:opacity-100"
-                        style={{
-                          left: `${Math.random() * 100}%`,
-                          top: `${Math.random() * 100}%`,
-                        }}
-                        animate={{
-                          scale: [0, 1, 0],
-                          opacity: [0, 0.8, 0],
-                          y: [-10, -30, -50]
-                        }}
-                        transition={{
-                          duration: 2,
-                          delay: particleIndex * 0.1,
-                          repeat: Infinity,
-                          ease: [0.4, 0.0, 0.6, 1] as [number, number, number, number]
-                        }}
-                      />
-                    ))}
-                  </motion.div>
+                  {/* Bottom accent line on hover */}
+                  <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-cyan-500 to-blue-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                   {/* Header */}
-                  <div className="flex items-start gap-4 mb-6 relative z-10">
-                    <motion.div
-                      className={`bg-gradient-to-r ${process.gradient} p-4 rounded-2xl shadow-lg border border-white/20 flex-shrink-0`}
-                      whileHover={{ scale: 1.1, rotate: 5 }}
-                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    >
-                      <Icon className="h-8 w-8 text-white" />
-                    </motion.div>
-                                         
+                  <div className="flex items-start gap-4 mb-6">
+                    <div className={`bg-gradient-to-r ${process.gradient} p-3 flex-shrink-0`}>
+                      <Icon className="h-6 w-6 text-white" />
+                    </div>
+
                     <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-2xl font-black text-white">{index + 1}</span>
-                        <div className="h-px bg-gradient-to-r from-blue-400 to-transparent flex-1" />
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className="text-xs font-mono text-cyan-400/60 tracking-widest">
+                          {String(index + 1).padStart(2, '0')}
+                        </span>
+                        <div className="h-px bg-gradient-to-r from-cyan-400/40 to-transparent flex-1" />
                       </div>
-                      <h3 className="text-xl font-bold text-white mb-2 group-hover:text-blue-300 transition-colors duration-300">
+                      <h3 className="text-lg font-bold text-white mb-2 group-hover:text-cyan-300 transition-colors duration-200">
                         {process.title}
                       </h3>
-                      <p className="text-white/70 leading-relaxed mb-4">
+                      <p className="text-white/50 leading-relaxed text-sm">
                         {process.description}
                       </p>
                     </div>
                   </div>
-                   
+
                   {/* Process Details */}
-                  <div className="space-y-3 mb-6 relative z-10">
+                  <div className="space-y-2.5 mb-6">
                     {process.details.map((detail, detailIndex) => (
-                      <motion.div
-                        key={detailIndex}
-                        className="flex items-start gap-3"
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.4, delay: index * 0.2 + detailIndex * 0.1 }}
-                        viewport={{ once: true }}
-                      >
-                        <CheckCircle className="h-4 w-4 text-blue-400 mt-0.5 flex-shrink-0" />
-                        <span className="text-white/80 text-sm leading-relaxed">{detail}</span>
-                      </motion.div>
+                      <div key={detailIndex} className="flex items-start gap-3">
+                        <CheckCircle className="h-4 w-4 text-cyan-400/70 mt-0.5 flex-shrink-0" />
+                        <span className="text-white/60 text-sm leading-relaxed">{detail}</span>
+                      </div>
                     ))}
                   </div>
-                   
+
                   {/* Technology Badge */}
-                  <div className="flex items-center justify-between relative z-10">
-                    <div className="inline-flex items-center gap-2 bg-blue-500/20 border border-blue-400/30 rounded-full px-4 py-2">
-                      <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
-                      <span className="text-blue-300 text-sm font-medium">{process.tech}</span>
+                  <div className="flex items-center justify-between">
+                    <div className="inline-flex items-center gap-2 border border-cyan-400/20 px-3 py-1.5">
+                      <div className="w-1.5 h-1.5 bg-cyan-400 animate-pulse" />
+                      <span className="text-cyan-400/70 text-xs font-mono">{process.tech}</span>
                     </div>
-                                         
+
                     {index < processDetails.length - 1 && (
                       <motion.div
                         className="hidden lg:block"
-                        animate={{ x: [0, 5, 0] }}
-                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                        animate={{ x: [0, 4, 0] }}
+                        transition={{ duration: 2, repeat: Infinity }}
                       >
-                        <ArrowRight className="h-5 w-5 text-blue-400/60" />
+                        <ArrowRight className="h-4 w-4 text-cyan-400/40" />
                       </motion.div>
                     )}
                   </div>
@@ -293,115 +211,71 @@ export default function PipelineExplanationSection() {
             );
           })}
         </div>
-         
+
         {/* Benefits Summary */}
         <motion.div
-          className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl relative group"
+          className="border border-white/8 hover:border-cyan-400/20 p-8 transition-colors duration-300 relative"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
           viewport={{ once: true }}
         >
-          {/* Subtle glow effect */}
           <motion.div
-            className="absolute -inset-0.5 bg-gradient-to-r from-blue-500/10 to-blue-300/10 rounded-3xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+            className="absolute top-4 right-4 w-1.5 h-1.5 bg-cyan-400"
+            animate={{ opacity: [0.3, 0.8, 0.3] }}
+            transition={{ duration: 2.5, repeat: Infinity }}
           />
-           
-          {/* Additional floating particles for the summary */}
-          {[...Array(8)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-1 h-1 bg-blue-400 rounded-full opacity-20"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-              }}
-              animate={{
-                y: [-10, 10, -10],
-                opacity: [0.1, 0.4, 0.1],
-                scale: [0.5, 1, 0.5]
-              }}
-              transition={{
-                duration: 3 + Math.random() * 2,
-                repeat: Infinity,
-                delay: Math.random() * 2,
-                ease: [0.4, 0.0, 0.6, 1] as [number, number, number, number]
-              }}
-            />
-          ))}
-           
-          {/* Corner accent for summary */}
-          <motion.div
-            className="absolute top-4 right-4 w-2 h-2 bg-blue-400 rounded-full"
-            animate={{
-              scale: [1, 1.3, 1],
-              opacity: [0.3, 0.8, 0.3]
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: [0.4, 0.0, 0.6, 1] as [number, number, number, number]
-            }}
-          />
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center relative z-10">
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div>
-              <h3 className="text-3xl font-bold text-white mb-6">
+              <h3 className="text-2xl font-bold text-white mb-6">
                 Why This Architecture?
               </h3>
-                             
+
               <div className="space-y-4">
                 {[
                   { icon: Zap, text: "Lightning-fast processing with parallel workflows" },
                   { icon: Server, text: "Scalable infrastructure that grows with your data" },
                   { icon: Clock, text: "Real-time monitoring and intelligent error handling" },
                   { icon: Database, text: "Optimized for both analytics and transactional workloads" }
-                ].map((benefit, index) => (
+                ].map((benefit, i) => (
                   <motion.div
-                    key={index}
+                    key={i}
                     className="flex items-center gap-3"
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.4, delay: index * 0.1 }}
+                    transition={{ duration: 0.4, delay: i * 0.08 }}
                     viewport={{ once: true }}
                   >
-                    <benefit.icon className="h-5 w-5 text-blue-400 flex-shrink-0" />
-                    <span className="text-white/80">{benefit.text}</span>
+                    <benefit.icon className="h-4 w-4 text-cyan-400 flex-shrink-0" />
+                    <span className="text-white/65 text-sm">{benefit.text}</span>
                   </motion.div>
                 ))}
               </div>
             </div>
-             
+
             <div className="text-center lg:text-right">
-              <motion.div
-                className="inline-block bg-gradient-to-r from-blue-600 to-blue-500 p-6 rounded-2xl shadow-xl mb-6"
-                whileHover={{ scale: 1.05, rotate: 5 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              >
-                <Database className="h-12 w-12 text-white mx-auto" />
-              </motion.div>
-                             
-              <h4 className="text-2xl font-bold text-white mb-4">
+              <div className="inline-block border border-cyan-400/25 p-6 mb-6">
+                <Database className="h-10 w-10 text-cyan-400 mx-auto" style={{ filter: 'drop-shadow(0 0 6px rgba(6,182,212,0.5))' }} />
+              </div>
+
+              <h4 className="text-xl font-bold text-white mb-3">
                 Ready to See It in Action?
               </h4>
-                             
-              <p className="text-white/70 mb-6">
+
+              <p className="text-white/50 text-sm mb-6">
                 Experience the power of intelligent ETL processing
               </p>
-                             
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+
+              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                 <Link
                   href="/login"
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white px-8 py-4 rounded-xl font-bold shadow-lg hover:shadow-blue-500/30 transition-all duration-300"
+                  className="inline-flex items-center gap-2 bg-cyan-500 hover:bg-cyan-400 text-black px-8 py-3.5 text-sm font-bold uppercase tracking-widest transition-colors duration-200"
                 >
                   Start Processing Data
-                  <ArrowRight className="h-5 w-5" />
+                  <ArrowRight className="h-4 w-4" />
                 </Link>
               </motion.div>
-                             
-              <p className="text-white/50 text-sm mt-4">
-                Demo: admin@tengrilake.ai / password123
-              </p>
             </div>
           </div>
         </motion.div>

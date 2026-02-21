@@ -50,21 +50,21 @@ function FAQItem({
 
   return (
     <motion.div
-      className="border border-gray-200 rounded-2xl overflow-hidden hover:border-blue-200 transition-colors duration-200"
+      className={`border transition-colors duration-200 ${open ? 'border-cyan-400/30' : 'border-white/10 hover:border-white/20'}`}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.07 }}
       viewport={{ once: true }}
     >
       <button
-        className="w-full flex items-center justify-between gap-4 px-7 py-5 text-left bg-white hover:bg-blue-50/40 transition-colors duration-200"
+        className="w-full flex items-center justify-between gap-4 px-7 py-5 text-left hover:bg-white/[0.03] transition-colors duration-200"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
       >
-        <span className="font-semibold text-gray-900 text-base leading-snug">
+        <span className="font-semibold text-white/85 text-base leading-snug">
           {question}
         </span>
-        <span className="flex-shrink-0 p-1 rounded-lg bg-blue-50 text-blue-600">
+        <span className={`flex-shrink-0 p-1 border transition-colors duration-200 ${open ? 'border-cyan-400/40 text-cyan-400' : 'border-white/15 text-white/40'}`}>
           {open ? <Minus className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
         </span>
       </button>
@@ -77,8 +77,8 @@ function FAQItem({
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
           >
-            <div className="px-7 pb-6 pt-1 bg-white border-t border-gray-100">
-              <p className="text-gray-600 leading-relaxed text-sm">{answer}</p>
+            <div className="px-7 pb-6 pt-1 border-t border-white/8">
+              <p className="text-white/60 leading-relaxed text-sm">{answer}</p>
             </div>
           </motion.div>
         )}
@@ -89,10 +89,21 @@ function FAQItem({
 
 export default function FAQSection() {
   return (
-    <section className="bg-slate-50 py-24 relative">
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-200/60 to-transparent" />
+    <section className="bg-black py-24 relative overflow-hidden">
+      {/* Grid overlay */}
+      <div
+        className="absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(6,182,212,1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(6,182,212,1) 1px, transparent 1px)
+          `,
+          backgroundSize: '60px 60px',
+        }}
+      />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent" />
 
-      <div className="max-w-4xl mx-auto px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto px-6 lg:px-8 relative z-10">
 
         <motion.div
           className="text-center mb-14"
@@ -101,21 +112,21 @@ export default function FAQSection() {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <span className="inline-block text-blue-600 font-semibold text-sm uppercase tracking-widest mb-4">
+          <span className="inline-block text-cyan-400 font-mono text-xs uppercase tracking-[0.3em] mb-4">
             FAQ
           </span>
-          <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
+          <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
             Часто задаваемые{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-300">
               вопросы
             </span>
           </h2>
-          <p className="text-gray-500 text-lg max-w-2xl mx-auto">
+          <p className="text-white/50 text-lg max-w-2xl mx-auto">
             Ответы на ключевые вопросы о платформе государственного уровня.
           </p>
         </motion.div>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2">
           {faqs.map((faq, i) => (
             <FAQItem
               key={i}

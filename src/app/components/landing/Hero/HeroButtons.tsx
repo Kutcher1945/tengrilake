@@ -4,50 +4,31 @@ import { ArrowRight, FileText } from 'lucide-react';
 
 export function HeroButtons() {
   return (
-    <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+    <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+      {/* Primary — solid cyan, sharp edges, glow on hover */}
       <motion.div
-        whileHover={{ scale: 1.05, rotateX: 5 }}
-        whileTap={{ scale: 0.98 }}
-        className="group relative"
+        whileHover={{ scale: 1.03 }}
+        whileTap={{ scale: 0.97 }}
+        className="relative group"
       >
-        <motion.div
-          className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-2xl blur opacity-60 group-hover:opacity-90 transition duration-500"
-          animate={{
-            background: [
-              "linear-gradient(45deg, rgb(37 99 235), rgb(8 145 178))",
-              "linear-gradient(135deg, rgb(8 145 178), rgb(37 99 235))",
-              "linear-gradient(225deg, rgb(37 99 235), rgb(8 145 178))",
-              "linear-gradient(315deg, rgb(8 145 178), rgb(37 99 235))",
-              "linear-gradient(45deg, rgb(37 99 235), rgb(8 145 178))"
-            ]
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
+        <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-blue-500 opacity-0 group-hover:opacity-60 blur-sm transition-opacity duration-300" />
         <Link
           href="/login"
-          className="relative bg-gradient-to-r from-blue-600 to-blue-700 text-white px-10 py-4 rounded-xl text-lg font-bold flex items-center justify-center shadow-2xl backdrop-blur-sm border border-blue-400/30 group-hover:shadow-blue-500/30 transition-all duration-300"
+          className="relative flex items-center gap-3 bg-cyan-500 hover:bg-cyan-400 text-black px-9 py-3.5 text-sm font-bold tracking-[0.15em] uppercase transition-colors duration-200"
         >
           Запросить брифинг
-          <motion.div
-            className="ml-3"
-            animate={{ x: [0, 5, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: [0.4, 0.0, 0.6, 1] as [number, number, number, number] }}
-          >
-            <ArrowRight className="h-5 w-5" />
-          </motion.div>
+          <ArrowRight className="h-4 w-4" />
         </Link>
       </motion.div>
 
+      {/* Secondary — outline only, no fill */}
       <motion.button
-        className="group relative bg-white/10 backdrop-blur-md text-white px-10 py-4 rounded-xl text-lg font-semibold border border-white/30 hover:bg-white/20 hover:border-blue-400 transition-all duration-300 shadow-xl hover:shadow-blue-500/20 flex items-center gap-3"
-        whileHover={{ scale: 1.02, y: -2 }}
+        className="flex items-center gap-3 border border-white/20 hover:border-cyan-400/60 text-white/60 hover:text-white/90 px-9 py-3.5 text-sm font-medium tracking-[0.15em] uppercase transition-all duration-200 backdrop-blur-sm"
+        whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
       >
-        <FileText className="h-5 w-5 text-blue-300" />
-        <span className="relative z-10">Обзор архитектуры</span>
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-blue-600/0 to-blue-600/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        />
+        <FileText className="h-4 w-4 text-cyan-400/70" />
+        Обзор архитектуры
       </motion.button>
     </div>
   );

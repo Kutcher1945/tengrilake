@@ -38,17 +38,19 @@ const solutions = [
 
 export default function SolutionSection() {
   return (
-    <section id="solution" className="bg-slate-950 py-24 relative overflow-hidden scroll-mt-16">
-      {/* Background grid */}
+    <section id="solution" className="bg-slate-950 pt-10 pb-24 relative overflow-hidden scroll-mt-16">
+      {/* Shared grid — same pattern as ProblemSection, no seam */}
       <div
-        className="absolute inset-0 opacity-5"
+        className="absolute inset-0 opacity-[0.04]"
         style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(59,130,246,0.6) 1px, transparent 0)`,
-          backgroundSize: '48px 48px'
+          backgroundImage: `
+            linear-gradient(rgba(6,182,212,1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(6,182,212,1) 1px, transparent 1px)
+          `,
+          backgroundSize: '60px 60px',
         }}
       />
-      {/* Gradient accent */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
+      {/* No top separator — bleeds into ProblemSection above */}
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
 
@@ -59,7 +61,7 @@ export default function SolutionSection() {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <span className="inline-block text-blue-400 font-semibold text-sm uppercase tracking-widest mb-4">
+          <span className="inline-block text-cyan-400 font-mono text-xs uppercase tracking-[0.3em] mb-4">
             Решение
           </span>
           <h2 className="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
@@ -78,14 +80,14 @@ export default function SolutionSection() {
           {solutions.map((item, i) => (
             <motion.div
               key={i}
-              className={`group relative rounded-2xl p-6 border border-white/10 bg-white/5 hover:bg-white/10 hover:border-blue-500/40 transition-all duration-300 ${i === 4 ? 'md:col-span-2 lg:col-span-1' : ''}`}
+              className={`group relative p-6 border border-white/8 bg-white/[0.02] hover:bg-white/[0.04] hover:border-cyan-400/30 transition-all duration-300 ${i === 4 ? 'md:col-span-2 lg:col-span-1' : ''}`}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
               viewport={{ once: true }}
               whileHover={{ y: -4 }}
             >
-              <div className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${item.gradient} mb-4 shadow-lg`}>
+              <div className={`inline-flex p-3 bg-gradient-to-br ${item.gradient} mb-4`}>
                 <item.icon className="h-6 w-6 text-white" />
               </div>
               <h3 className="text-lg font-bold text-white mb-3 leading-snug">{item.title}</h3>

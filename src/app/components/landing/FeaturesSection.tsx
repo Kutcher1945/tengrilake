@@ -142,15 +142,25 @@ export default function TechnologyShowcase() {
   }, []);
 
   return (
-    <section className="py-32 bg-gradient-to-b from-black via-slate-950 to-blue-950 relative overflow-hidden" ref={ref}>
-      {/* Animated background elements */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-black to-blue-900/30" />
-      
+    <section className="py-32 bg-black relative overflow-hidden" ref={ref}>
+      {/* Grid overlay */}
+      <div
+        className="absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(6,182,212,1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(6,182,212,1) 1px, transparent 1px)
+          `,
+          backgroundSize: '60px 60px',
+        }}
+      />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent" />
+
       {/* Floating particles - using consistent positions */}
       {floatingParticles.map((particle, i) => (
         <motion.div
           key={i}
-          className="absolute w-1 h-1 bg-blue-400 rounded-full opacity-40"
+          className="absolute w-1 h-1 bg-cyan-400 rounded-full opacity-30"
           style={{
             left: `${particle.left}%`,
             top: `${particle.top}%`,
@@ -169,14 +179,6 @@ export default function TechnologyShowcase() {
         />
       ))}
 
-      {/* Grid overlay */}
-      <div 
-        className="absolute inset-0 opacity-10"
-        style={{
-          backgroundImage: `radial-gradient(circle at 2px 2px, rgba(59, 130, 246, 0.3) 1px, transparent 0)`,
-          backgroundSize: '80px 80px'
-        }}
-      />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         {/* Section Header */}
@@ -194,20 +196,23 @@ export default function TechnologyShowcase() {
             transition={{ duration: 0.8, delay: 0.2, type: "spring", stiffness: 200 }}
             viewport={{ once: true }}
           >
-            <div className="bg-gradient-to-r from-blue-600 to-blue-400 p-4 rounded-2xl shadow-xl border border-white/20">
-              <Cpu className="h-8 w-8 text-white" />
+            <div className="border border-cyan-400/30 bg-cyan-400/5 p-4">
+              <Cpu className="h-8 w-8 text-cyan-400" />
             </div>
           </motion.div>
 
+          <span className="inline-block text-cyan-400 font-mono text-xs uppercase tracking-[0.3em] mb-4">
+            Технологии
+          </span>
           <h2 className="text-5xl md:text-6xl font-black text-white mb-6 leading-tight">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-white to-blue-200">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-white to-blue-300">
               Powered by
             </span>
-            <br />
+            {' '}
             <span className="text-white">Modern Technology</span>
           </h2>
-          
-          <p className="text-xl md:text-2xl text-white/70 max-w-3xl mx-auto leading-relaxed">
+
+          <p className="text-xl md:text-2xl text-white/50 max-w-3xl mx-auto leading-relaxed">
             Our platform leverages industry-leading technologies to deliver 
             unparalleled performance, scalability, and reliability.
           </p>
@@ -234,15 +239,15 @@ export default function TechnologyShowcase() {
               >
                 {/* Card glow effect */}
                 <motion.div
-                  className="absolute -inset-0.5 bg-gradient-to-r from-blue-500/20 to-blue-300/20 rounded-3xl blur opacity-0 group-hover:opacity-60 transition-opacity duration-700"
+                  className="absolute -inset-0.5 bg-cyan-400/10 blur opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                 />
 
-                <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl group-hover:border-blue-400/50 transition-all duration-500 overflow-hidden">
+                <div className="relative bg-white/[0.02] border border-white/8 p-8 group-hover:border-cyan-400/30 transition-all duration-300 overflow-hidden">
                   {/* Floating particles on hover - using consistent positions */}
                   {particlePositions.map((particle, particleIndex) => (
                     <motion.div
                       key={particleIndex}
-                      className="absolute w-1 h-1 bg-blue-300 rounded-full opacity-0 group-hover:opacity-100"
+                      className="absolute w-1 h-1 bg-cyan-400 rounded-full opacity-0 group-hover:opacity-100"
                       style={{
                         left: `${particle.left}%`,
                         top: `${particle.top}%`,
@@ -264,7 +269,7 @@ export default function TechnologyShowcase() {
                   {/* Header */}
                   <div className="text-center mb-6">
                     <motion.div
-                      className={`bg-gradient-to-r ${tech.gradient} p-4 rounded-2xl w-16 h-16 mx-auto mb-4 flex items-center justify-center shadow-lg border border-white/20`}
+                      className={`bg-gradient-to-r ${tech.gradient} p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center`}
                       whileHover={{ 
                         scale: 1.1, 
                         rotate: 5,
@@ -275,11 +280,11 @@ export default function TechnologyShowcase() {
                       <Icon className="h-8 w-8 text-white" />
                     </motion.div>
                     
-                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-blue-300 transition-colors duration-300">
+                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-cyan-300 transition-colors duration-300">
                       {tech.name}
                     </h3>
-                    
-                    <div className="text-blue-300 text-sm font-medium bg-blue-500/20 rounded-full px-3 py-1 inline-block">
+
+                    <div className="text-cyan-400/80 text-xs font-mono uppercase tracking-widest border border-cyan-400/20 px-3 py-1 inline-block">
                       {tech.category}
                     </div>
                   </div>
@@ -303,7 +308,7 @@ export default function TechnologyShowcase() {
                         }}
                         viewport={{ once: true }}
                       >
-                        <div className="w-1.5 h-1.5 bg-blue-400 rounded-full flex-shrink-0" />
+                        <div className="w-1.5 h-1.5 bg-cyan-400 flex-shrink-0" />
                         <span className="text-white/80 text-sm">{feature}</span>
                       </motion.div>
                     ))}
@@ -311,7 +316,7 @@ export default function TechnologyShowcase() {
 
                   {/* Interactive bottom accent - only show on hover */}
                   <motion.div
-                    className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-blue-300 rounded-b-3xl"
+                    className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-cyan-500 to-blue-300"
                     initial={{ scaleX: 0, opacity: 0 }}
                     whileHover={{ scaleX: 1, opacity: 1 }}
                     transition={{ duration: 0.3, ease: "easeOut" }}
@@ -319,7 +324,7 @@ export default function TechnologyShowcase() {
 
                   {/* Corner accent */}
                   <motion.div
-                    className="absolute top-4 right-4 w-2 h-2 bg-blue-400 rounded-full"
+                    className="absolute top-4 right-4 w-1.5 h-1.5 bg-cyan-400"
                     animate={{
                       scale: [1, 1.5, 1],
                       opacity: [0.5, 1, 0.5]
@@ -345,7 +350,7 @@ export default function TechnologyShowcase() {
           viewport={{ once: true }}
         >
           <motion.div
-            className="inline-flex items-center gap-3 bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl px-8 py-4 text-white/80 text-lg shadow-xl"
+            className="inline-flex items-center gap-3 border border-white/10 hover:border-cyan-400/30 px-8 py-4 text-white/60 hover:text-white/80 text-base transition-colors duration-200"
             whileHover={{ 
               scale: 1.05, 
               backgroundColor: "rgba(255, 255, 255, 0.1)",
@@ -356,7 +361,7 @@ export default function TechnologyShowcase() {
               animate={{ rotate: [0, 360] }}
               transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
             >
-              <Zap className="h-5 w-5 text-blue-400" />
+              <Zap className="h-5 w-5 text-cyan-400" />
             </motion.div>
             <span>Enterprise-grade infrastructure meets intelligent automation</span>
           </motion.div>
