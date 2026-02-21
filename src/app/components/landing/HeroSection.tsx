@@ -82,7 +82,7 @@ export default function HeroSection() {
       <HUDCorner position="br" />
 
       {/* System status indicator */}
-      <motion.div
+      {/* <motion.div
         className="absolute top-7 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-1.5 bg-black/70 border border-cyan-400/25 backdrop-blur-sm z-20"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -95,7 +95,7 @@ export default function HeroSection() {
         <span className="text-cyan-400/70 text-xs font-mono tracking-[0.25em]">
           СИСТЕМА АКТИВНА
         </span>
-      </motion.div>
+      </motion.div> */}
 
       {/* Main content */}
       <motion.div
