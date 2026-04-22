@@ -46,7 +46,7 @@ export default function LandingFooter() {
                 className="inline-block"
               >
                 <Image
-                  src="/logo/logo-white-letters.png"
+                  src="/logo/logo.png"
                   alt="TengriLake AI"
                   width={220}
                   height={50}
