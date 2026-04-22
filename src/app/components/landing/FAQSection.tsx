@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
+import Image from 'next/image';
 import { Plus, Minus } from 'lucide-react';
 
 const faqs = [
@@ -136,6 +137,24 @@ export default function FAQSection() {
             />
           ))}
         </div>
+
+        <motion.div
+          className="flex justify-center mt-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          viewport={{ once: true }}
+        >
+          <div className="bg-white px-8 py-5 shadow-[0_0_40px_rgba(6,182,212,0.12)]">
+            <Image
+              src="/logo/logo-black-letters2.png"
+              alt="TengriLake AI"
+              width={220}
+              height={50}
+              className="object-contain"
+            />
+          </div>
+        </motion.div>
 
       </div>
     </section>
