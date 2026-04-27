@@ -269,7 +269,7 @@ export default function PipelineExplanationSection() {
 
               <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                 <Link
-                  href="/login"
+                  href="https://exp.smartalmaty.kz/login"
                   className="inline-flex items-center gap-2 bg-cyan-500 hover:bg-cyan-400 text-black px-8 py-3.5 text-sm font-bold uppercase tracking-widest transition-colors duration-200"
                 >
                   Start Processing Data

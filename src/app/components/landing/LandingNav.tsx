@@ -80,7 +80,7 @@ export default function LandingNav() {
             transition={{ duration: 0.5, delay: 0.3 }}
           >
             <Link
-              href="/login"
+              href="https://exp.smartalmaty.kz/login"
               className="text-white/50 hover:text-white px-4 py-2 text-xs font-medium uppercase tracking-widest transition-colors duration-200"
             >
               Войти
@@ -89,7 +89,7 @@ export default function LandingNav() {
             <div className="relative group">
               <div className="absolute -inset-0.5 bg-cyan-500 opacity-0 group-hover:opacity-40 blur-sm transition-opacity duration-300" />
               <Link
-                href="/login"
+                href="https://exp.smartalmaty.kz/login"
                 className="relative bg-cyan-500 hover:bg-cyan-400 text-black px-5 py-2 text-xs font-bold uppercase tracking-widest flex items-center gap-2 transition-colors duration-200"
               >
                 Запросить брифинг
@@ -134,14 +134,14 @@ export default function LandingNav() {
 
               <div className="border-t border-white/10 mt-2 pt-3 flex flex-col gap-2">
                 <Link
-                  href="/login"
+                  href="https://exp.smartalmaty.kz/login"
                   onClick={() => setMobileOpen(false)}
                   className="w-full text-center px-4 py-3 text-xs font-medium text-white/50 hover:text-white hover:bg-white/5 uppercase tracking-widest transition-all duration-200"
                 >
                   Войти
                 </Link>
                 <Link
-                  href="/login"
+                  href="https://exp.smartalmaty.kz/login"
                   onClick={() => setMobileOpen(false)}
                   className="w-full text-center bg-cyan-500 text-black px-4 py-3 text-xs font-bold uppercase tracking-widest"
                 >

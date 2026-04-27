@@ -13,7 +13,7 @@ export function HeroButtons() {
       >
         <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-blue-500 opacity-0 group-hover:opacity-60 blur-sm transition-opacity duration-300" />
         <Link
-          href="/login"
+          href="https://exp.smartalmaty.kz/login"
           className="relative flex items-center gap-3 bg-cyan-500 hover:bg-cyan-400 text-black px-9 py-3.5 text-sm font-bold tracking-[0.15em] uppercase transition-colors duration-200"
         >
           Запросить брифинг

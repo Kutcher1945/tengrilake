@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { CalendarCheck, FileSearch, Mail, Phone } from 'lucide-react';
+import { ArrowRight, FileText } from 'lucide-react';
 
 export default function FinalCTASection() {
   return (
@@ -66,7 +67,7 @@ export default function FinalCTASection() {
           >
             <div className="absolute -inset-0.5 bg-cyan-500 opacity-0 group-hover:opacity-40 blur-sm transition-opacity duration-300" />
             <Link
-              href="/login"
+              href="https://exp.smartalmaty.kz/login"
               className="relative flex items-center gap-3 bg-cyan-500 hover:bg-cyan-400 text-black px-10 py-4 text-sm font-bold uppercase tracking-widest transition-colors duration-200"
             >
               <CalendarCheck className="h-5 w-5" />
@@ -75,14 +76,20 @@ export default function FinalCTASection() {
           </motion.div>
 
           {/* Secondary CTA */}
-          <motion.button
-            className="flex items-center gap-3 border border-white/20 hover:border-cyan-400/50 text-white/65 hover:text-white px-10 py-4 text-sm font-medium uppercase tracking-widest transition-all duration-200"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.97 }}
-          >
-            <FileSearch className="h-5 w-5 text-cyan-400/70" />
-            Запросить технический брифинг
-          </motion.button>
+          <motion.div
+        whileHover={{ scale: 1.03 }}
+        whileTap={{ scale: 0.97 }}
+        className="relative group"
+      >
+        <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-blue-500 opacity-0 group-hover:opacity-60 blur-sm transition-opacity duration-300" />
+        <Link
+          href="https://exp.smartalmaty.kz/login"
+          className="relative flex items-center gap-3 bg-cyan-500 hover:bg-cyan-400 text-black px-9 py-3.5 text-sm font-bold tracking-[0.15em] uppercase transition-colors duration-200"
+        >
+          Запросить брифинг
+          <ArrowRight className="h-4 w-4" />
+        </Link>
+      </motion.div>
         </motion.div>
 
         {/* Contact info */}
