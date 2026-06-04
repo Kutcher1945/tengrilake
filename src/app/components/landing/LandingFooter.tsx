@@ -30,7 +30,7 @@ export default function LandingFooter() {
             viewport={{ once: true }}
           >
             <div className="mb-6">
-              <Image src="/logo/logo.png" alt="TengriLake AI" width={200} height={46} className="object-contain" />
+              <Image src="/logo/logo-white-letters.png" alt="TengriLake AI" width={200} height={44} className="object-contain" />
             </div>
 
             <p className="text-base leading-relaxed mb-6 max-w-md" style={{ color: 'rgba(193,211,255,0.55)' }}>
