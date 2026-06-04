@@ -3,16 +3,20 @@ import { motion } from 'framer-motion';
 export function HeroTitle() {
   return (
     <div className="mb-10">
-      {/* Tech badge */}
       <motion.div
-        className="inline-flex items-center gap-2 mb-6 px-3 py-1.5 border border-cyan-400/35 bg-cyan-400/5"
+        className="inline-flex items-center gap-2 mb-6 px-4 py-1.5"
+        style={{
+          border: '1px solid rgba(55,114,255,0.4)',
+          background: 'rgba(55,114,255,0.08)',
+          borderRadius: 20,
+        }}
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
       >
-        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 inline-block" />
-        <span className="text-cyan-400/80 font-mono text-xs tracking-[0.3em] uppercase">
-          AI · GOV · PLATFORM
+        <span className="w-1.5 h-1.5 rounded-full inline-block" style={{ background: '#3772ff' }} />
+        <span className="font-mono text-xs tracking-[0.25em] uppercase" style={{ color: 'rgba(55,114,255,0.9)' }}>
+          City Data · Platform · Almaty
         </span>
       </motion.div>
 
@@ -23,34 +27,36 @@ export function HeroTitle() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          Национальная
+          Городские данные —
         </motion.span>
         <motion.span
-          className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-300 to-cyan-400"
+          className="block text-transparent bg-clip-text"
+          style={{ backgroundImage: 'linear-gradient(to right,#3772ff,#60a5fa,#3772ff)' }}
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          цифровая инфраструктура
+          под контролем
         </motion.span>
         <motion.span
-          className="block text-white/75"
+          className="block"
+          style={{ color: 'rgba(232,238,255,0.75)' }}
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
         >
-          данных
+          с первого дня
         </motion.span>
       </motion.h1>
 
-      {/* Monospace tech separator */}
       <motion.div
-        className="text-xs font-mono text-cyan-400/40 tracking-[0.35em] uppercase"
+        className="font-mono text-xs tracking-[0.3em] uppercase"
+        style={{ color: 'rgba(55,114,255,0.45)' }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.9, duration: 0.5 }}
       >
-        ── Tengrilake.AI · Государственное управление ──
+        ── TengriLake.AI · Управление данными Алматы ──
       </motion.div>
     </div>
   );

@@ -7,11 +7,11 @@ import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 
 const navLinks = [
-  { label: 'Проблематика', href: '#problem' },
-  { label: 'Решение',      href: '#solution' },
+  { label: 'Проблема',     href: '#problem' },
+  { label: 'Как работает', href: '#solution' },
+  { label: 'Стек',         href: '#stack' },
   { label: 'Архитектура',  href: '#architecture' },
   { label: 'Применение',   href: '#use-cases' },
-  { label: 'Преимущества', href: '#advantages' },
   { label: 'Контакты',     href: '#contact' },
 ];
 
@@ -25,38 +25,44 @@ export default function LandingNav() {
 
   return (
     <motion.nav
-      className="sticky top-0 z-50 bg-black/95 backdrop-blur-lg border-b border-white/8 relative overflow-hidden"
+      style={{
+        position: 'sticky', top: 0, zIndex: 50,
+        background: 'linear-gradient(135deg,#0d1528,#131d35)',
+        backdropFilter: 'blur(12px)',
+        borderBottom: '1px solid rgba(55,114,255,0.18)',
+      }}
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
     >
-      {/* Subtle cyan scan line on bottom border */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent" />
+      {/* blue glow line on bottom */}
+      <div style={{
+        position: 'absolute', bottom: 0, left: 0, right: 0, height: 1,
+        background: 'linear-gradient(to right,transparent,rgba(55,114,255,0.4),transparent)',
+      }}/>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex justify-between items-center h-14">
 
           {/* Logo */}
-          <motion.div
-            className="flex-shrink-0"
+          <motion.button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             initial={{ x: -40, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
+            className="flex-shrink-0"
           >
-            <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-              <Image
-                src="/logo/logo-white-letters.png"
-                alt="TengriLake AI"
-                width={150}
-                height={34}
-                className="object-contain"
-              />
-            </button>
-          </motion.div>
+            <Image
+              src="/logo/logo-white-letters.png"
+              alt="TengriLake AI"
+              width={150} height={34}
+              className="object-contain"
+            />
+          </motion.button>
 
-          {/* Desktop nav links */}
+          {/* Desktop nav */}
           <motion.div
-            className="hidden lg:flex items-center gap-0"
+            className="hidden lg:flex items-center gap-1"
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
@@ -65,7 +71,10 @@ export default function LandingNav() {
               <button
                 key={link.href}
                 onClick={() => scrollTo(link.href)}
-                className="px-3 py-1.5 text-xs font-medium text-white/50 hover:text-white uppercase tracking-widest transition-colors duration-200 hover:bg-white/5"
+                className="px-3 py-1.5 text-xs font-medium transition-colors duration-200"
+                style={{ color: 'rgba(193,211,255,0.55)', borderRadius: 8 }}
+                onMouseEnter={e => (e.currentTarget.style.color = '#e8eeff')}
+                onMouseLeave={e => (e.currentTarget.style.color = 'rgba(193,211,255,0.55)')}
               >
                 {link.label}
               </button>
@@ -81,25 +90,30 @@ export default function LandingNav() {
           >
             <Link
               href="https://exp.smartalmaty.kz/login"
-              className="text-white/50 hover:text-white px-4 py-2 text-xs font-medium uppercase tracking-widest transition-colors duration-200"
+              className="text-xs font-medium px-4 py-2 transition-colors duration-200"
+              style={{ color: 'rgba(193,211,255,0.55)' }}
             >
               Войти
             </Link>
 
-            <div className="relative group">
-              <div className="absolute -inset-0.5 bg-cyan-500 opacity-0 group-hover:opacity-40 blur-sm transition-opacity duration-300" />
-              <Link
-                href="https://exp.smartalmaty.kz/login"
-                className="relative bg-cyan-500 hover:bg-cyan-400 text-black px-5 py-2 text-xs font-bold uppercase tracking-widest flex items-center gap-2 transition-colors duration-200"
-              >
-                Запросить брифинг
-              </Link>
-            </div>
+            <Link
+              href="https://exp.smartalmaty.kz/login"
+              className="relative text-xs font-bold px-5 py-2 transition-all duration-200"
+              style={{
+                background: '#3772ff',
+                color: '#fff',
+                borderRadius: 10,
+                boxShadow: '0 0 20px rgba(55,114,255,0.35)',
+              }}
+            >
+              Запросить брифинг
+            </Link>
           </motion.div>
 
           {/* Mobile hamburger */}
           <motion.button
-            className="lg:hidden p-2 text-white/60 hover:text-white transition-colors"
+            className="lg:hidden p-2 transition-colors"
+            style={{ color: 'rgba(193,211,255,0.6)' }}
             onClick={() => setMobileOpen((v) => !v)}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -115,7 +129,12 @@ export default function LandingNav() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            className="lg:hidden absolute top-full left-0 right-0 bg-black/98 border-b border-white/10 z-50"
+            style={{
+              position: 'absolute', top: '100%', left: 0, right: 0,
+              background: '#0d1528',
+              borderBottom: '1px solid rgba(55,114,255,0.18)',
+              zIndex: 50,
+            }}
             initial={{ opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
@@ -126,24 +145,26 @@ export default function LandingNav() {
                 <button
                   key={link.href}
                   onClick={() => { scrollTo(link.href); setMobileOpen(false); }}
-                  className="w-full text-left px-4 py-3 text-xs font-medium text-white/50 hover:text-white hover:bg-white/5 uppercase tracking-widest transition-all duration-200"
+                  className="w-full text-left px-4 py-3 text-xs font-medium transition-all duration-200"
+                  style={{ color: 'rgba(193,211,255,0.55)', borderRadius: 8 }}
                 >
                   {link.label}
                 </button>
               ))}
-
-              <div className="border-t border-white/10 mt-2 pt-3 flex flex-col gap-2">
+              <div className="mt-2 pt-3 flex flex-col gap-2" style={{ borderTop: '1px solid rgba(55,114,255,0.18)' }}>
                 <Link
                   href="https://exp.smartalmaty.kz/login"
                   onClick={() => setMobileOpen(false)}
-                  className="w-full text-center px-4 py-3 text-xs font-medium text-white/50 hover:text-white hover:bg-white/5 uppercase tracking-widest transition-all duration-200"
+                  className="w-full text-center px-4 py-3 text-xs font-medium transition-all duration-200"
+                  style={{ color: 'rgba(193,211,255,0.55)' }}
                 >
                   Войти
                 </Link>
                 <Link
                   href="https://exp.smartalmaty.kz/login"
                   onClick={() => setMobileOpen(false)}
-                  className="w-full text-center bg-cyan-500 text-black px-4 py-3 text-xs font-bold uppercase tracking-widest"
+                  className="w-full text-center px-4 py-3 text-xs font-bold"
+                  style={{ background: '#3772ff', color: '#fff', borderRadius: 10 }}
                 >
                   Запросить брифинг
                 </Link>

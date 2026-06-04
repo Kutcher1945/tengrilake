@@ -7,65 +7,59 @@ import { Plus, Minus } from 'lucide-react';
 
 const faqs = [
   {
-    question: "Что такое инфраструктура данных государственного уровня?",
-    answer:
-      "Централизованная платформа, объединяющая данные из различных ведомств в единое управляемое пространство для аналитики, стратегического планирования и принятия решений на основе доказательных данных.",
+    question: "Что такое TengriLake.AI?",
+    answer: "TengriLake.AI — платформа управления городскими данными, разработанная для Алматы. Объединяет трекер задач, S3-хранилище файлов, автоматизированный ETL-пайплайн и аналитические витрины в единый инструмент. Сотрудники создают задачи с файлами, платформа автоматически обрабатывает данные и предоставляет аналитику.",
   },
   {
-    question: "Как обеспечивается суверенитет данных?",
-    answer:
-      "Tengrilake.AI поддерживает развёртывание на собственной государственной инфраструктуре, в государственном облаке или в гибридной среде. Все данные остаются под юрисдикцией заказчика и не передаются третьим сторонам.",
+    question: "Как устроен процесс обработки данных?",
+    answer: "Task Tracker → S3/MinIO (хранение файлов) → Airflow/n8n (ETL, парсинг) → Dirty DB (сырые данные) → dbt (валидация и трансформация) → Clean DB (чистые данные) → ClickHouse и PostGIS (аналитические витрины и карта). Весь пайплайн автоматизирован — участие сотрудника заканчивается после загрузки файла.",
   },
   {
-    question: "Можно ли развернуть платформу на государственной инфраструктуре?",
-    answer:
-      "Да. Платформа поддерживает полноценное on-premises развёртывание, обеспечивая полный контроль над данными внутри государственного периметра безопасности.",
+    question: "Какие форматы файлов поддерживаются?",
+    answer: "Excel (.xlsx, .xls), PDF, CSV, GeoJSON и другие форматы загружаются через Task Tracker и хранятся в S3/MinIO. Airflow парсит их через pandas и geopandas. Геофайлы (GeoJSON, Shapefile) автоматически попадают в PostGIS для работы с картой.",
   },
   {
-    question: "Соответствует ли система требованиям регуляторов?",
-    answer:
-      "Tengrilake.AI спроектирован с учётом требований государственного сектора: ролевое управление доступом (RBAC), сквозное шифрование данных, полное журналирование аудита и прослеживаемость данных на протяжении всего жизненного цикла.",
+    question: "Где физически хранятся данные?",
+    answer: "Полностью on-premise. Все компоненты — MinIO, PostgreSQL, ClickHouse, Airflow — разворачиваются в инфраструктуре Алматы. Данные не покидают периметр города и не передаются в облачные сервисы. При необходимости поддерживается гибридная архитектура.",
   },
   {
-    question: "Для каких уровней государственного управления подходит платформа?",
-    answer:
-      "Платформа масштабируется от муниципальных проектов до национальных экосистем данных — поддерживается развёртывание на муниципальном, региональном и национальном уровнях.",
+    question: "Можно ли интегрировать с существующими системами?",
+    answer: "Да. n8n обеспечивает интеграцию через webhooks и REST API с любыми внешними системами города. Airflow может читать данные из любых источников — баз данных, API, файловых систем. Новые интеграции добавляются без изменения основного пайплайна.",
   },
   {
-    question: "Сколько времени занимает внедрение платформы?",
-    answer:
-      "Сроки внедрения зависят от масштаба проекта и существующей инфраструктуры. Пилотное развёртывание, как правило, реализуется в течение 8–12 недель. Национальные проекты планируются индивидуально после технического обследования.",
+    question: "Сколько времени занимает внедрение?",
+    answer: "Базовое развёртывание всех компонентов пайплайна занимает 8–12 недель: Task Tracker, S3, Airflow/n8n, PostgreSQL (Dirty/Clean), dbt, ClickHouse, PostGIS, OpenMetadata, Grafana. Затем — настройка ролей, онбординг сотрудников и первые рабочие DAG-и для обработки данных.",
   },
 ];
 
-function FAQItem({
-  question,
-  answer,
-  index,
-}: {
-  question: string;
-  answer: string;
-  index: number;
-}) {
+function FAQItem({ question, answer, index }: { question: string; answer: string; index: number }) {
   const [open, setOpen] = useState(false);
-
   return (
     <motion.div
-      className={`border transition-colors duration-200 ${open ? 'border-cyan-400/30' : 'border-white/10 hover:border-white/20'}`}
+      className="transition-all duration-200 overflow-hidden"
+      style={{
+        border: `1.5px solid ${open ? 'rgba(55,114,255,0.4)' : 'rgba(55,114,255,0.15)'}`,
+        borderRadius: 14,
+        background: open ? 'linear-gradient(145deg,#131d35,#1b2645)' : 'rgba(19,29,53,0.4)',
+      }}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.07 }}
       viewport={{ once: true }}
     >
       <button
-        className="w-full flex items-center justify-between gap-4 px-7 py-5 text-left hover:bg-white/[0.03] transition-colors duration-200"
-        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center justify-between gap-4 px-7 py-5 text-left"
+        onClick={() => setOpen(v => !v)}
         aria-expanded={open}
       >
-        <span className="font-semibold text-white/85 text-base leading-snug">
+        <span className="font-semibold text-base leading-snug" style={{ color: open ? '#fff' : 'rgba(232,238,255,0.85)' }}>
           {question}
         </span>
-        <span className={`flex-shrink-0 p-1 border transition-colors duration-200 ${open ? 'border-cyan-400/40 text-cyan-400' : 'border-white/15 text-white/40'}`}>
+        <span className="flex-shrink-0 p-1 transition-all duration-200" style={{
+          border: `1px solid ${open ? 'rgba(55,114,255,0.5)' : 'rgba(55,114,255,0.2)'}`,
+          color: open ? '#3772ff' : 'rgba(193,211,255,0.4)',
+          borderRadius: 7,
+        }}>
           {open ? <Minus className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
         </span>
       </button>
@@ -74,12 +68,12 @@ function FAQItem({
         {open && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
+            animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: "easeInOut" }}
+            transition={{ duration: 0.25, ease: 'easeInOut' }}
           >
-            <div className="px-7 pb-6 pt-1 border-t border-white/8">
-              <p className="text-white/60 leading-relaxed text-sm">{answer}</p>
+            <div className="px-7 pb-6 pt-1" style={{ borderTop: '1px solid rgba(55,114,255,0.15)' }}>
+              <p className="leading-relaxed text-sm" style={{ color: 'rgba(193,211,255,0.6)' }}>{answer}</p>
             </div>
           </motion.div>
         )}
@@ -88,21 +82,13 @@ function FAQItem({
   );
 }
 
+const DOT = 'radial-gradient(rgba(55,114,255,0.12) 1px,transparent 1px)';
+
 export default function FAQSection() {
   return (
-    <section className="bg-black py-24 relative overflow-hidden">
-      {/* Grid overlay */}
-      <div
-        className="absolute inset-0 opacity-[0.04]"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(6,182,212,1) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(6,182,212,1) 1px, transparent 1px)
-          `,
-          backgroundSize: '60px 60px',
-        }}
-      />
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent" />
+    <section className="py-24 relative overflow-hidden" style={{ background: '#060b16' }}>
+      <div className="absolute inset-0" style={{ backgroundImage: DOT, backgroundSize: '28px 28px', pointerEvents: 'none' }}/>
+      <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(to right,transparent,rgba(55,114,255,0.25),transparent)' }}/>
 
       <div className="max-w-4xl mx-auto px-6 lg:px-8 relative z-10">
 
@@ -113,46 +99,113 @@ export default function FAQSection() {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <span className="inline-block text-cyan-400 font-mono text-xs uppercase tracking-[0.3em] mb-4">
+          <span className="inline-block font-mono text-xs uppercase tracking-[0.3em] mb-4" style={{ color: '#3772ff' }}>
             FAQ
           </span>
           <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
-            Часто задаваемые{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-300">
+            Частые{' '}
+            <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(to right,#3772ff,#93c5fd)' }}>
               вопросы
             </span>
           </h2>
-          <p className="text-white/50 text-lg max-w-2xl mx-auto">
-            Ответы на ключевые вопросы о платформе государственного уровня.
+          <p className="text-lg max-w-2xl mx-auto" style={{ color: 'rgba(193,211,255,0.55)' }}>
+            Всё, что нужно знать о платформе перед началом работы.
           </p>
         </motion.div>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-3">
           {faqs.map((faq, i) => (
-            <FAQItem
-              key={i}
-              question={faq.question}
-              answer={faq.answer}
-              index={i}
-            />
+            <FAQItem key={i} question={faq.question} answer={faq.answer} index={i} />
           ))}
         </div>
 
+        {/* Logo showcase */}
         <motion.div
-          className="flex justify-center mt-16"
-          initial={{ opacity: 0, y: 20 }}
+          className="mt-20"
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
           viewport={{ once: true }}
         >
-          <div className="bg-white px-8 py-5 shadow-[0_0_40px_rgba(6,182,212,0.12)]">
-            <Image
-              src="/logo/logo-black-letters2.png"
-              alt="TengriLake AI"
-              width={220}
-              height={50}
-              className="object-contain"
-            />
+          <div className="flex items-center gap-4 mb-8">
+            <div className="flex-1 h-px" style={{ background: 'rgba(55,114,255,0.15)' }}/>
+            <span className="text-xs font-mono uppercase tracking-[0.3em]" style={{ color: 'rgba(55,114,255,0.5)' }}>
+              Все варианты логотипа
+            </span>
+            <div className="flex-1 h-px" style={{ background: 'rgba(55,114,255,0.15)' }}/>
+          </div>
+
+          {/* Dark background logos */}
+          <p className="text-xs font-mono uppercase tracking-widest mb-4" style={{ color: 'rgba(193,211,255,0.35)' }}>
+            На тёмном фоне
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-3">
+            {[
+              { src: '/logo/logo-white-letters.png',   label: 'Горизонтальный', w: 200, h: 44 },
+              { src: '/logo/logo-white-letters2.png',  label: 'Вариант 2',      w: 200, h: 44 },
+              { src: '/logo/logo-white-letters23.png', label: 'Вариант 3',      w: 200, h: 44 },
+            ].map(({ src, label, w, h }) => (
+              <div key={src} className="flex flex-col items-center gap-2 p-5" style={{
+                background: 'linear-gradient(145deg,#131d35,#1b2645)',
+                border: '1.5px solid rgba(55,114,255,0.2)',
+                borderRadius: 14,
+              }}>
+                <Image src={src} alt={label} width={w} height={h} className="object-contain max-h-10" />
+                <span className="text-xs" style={{ color: 'rgba(193,211,255,0.3)' }}>{label}</span>
+              </div>
+            ))}
+          </div>
+          <div className="grid grid-cols-3 gap-3 mb-6">
+            {[
+              { src: '/logo/logo-white-letters3.png', label: 'Компактный',  w: 130, h: 36 },
+              { src: '/logo/logo-white.png',          label: 'Знак белый',  w: 44,  h: 58 },
+              { src: '/logo/logo.svg',                label: 'SVG вектор',  w: 44,  h: 58 },
+            ].map(({ src, label, w, h }) => (
+              <div key={src} className="flex flex-col items-center gap-2 p-5" style={{
+                background: 'linear-gradient(145deg,#131d35,#1b2645)',
+                border: '1.5px solid rgba(55,114,255,0.2)',
+                borderRadius: 14,
+              }}>
+                <Image src={src} alt={label} width={w} height={h} className="object-contain max-h-12" />
+                <span className="text-xs" style={{ color: 'rgba(193,211,255,0.3)' }}>{label}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Light background logos */}
+          <p className="text-xs font-mono uppercase tracking-widest mb-4" style={{ color: 'rgba(193,211,255,0.35)' }}>
+            На светлом фоне
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-3">
+            {[
+              { src: '/logo/logo-black-letters.png',   label: 'Горизонтальный', w: 200, h: 44 },
+              { src: '/logo/logo-black-letters2.png',  label: 'Вариант 2',      w: 200, h: 44 },
+              { src: '/logo/logo-black-letters23.png', label: 'Вариант 3',      w: 200, h: 44 },
+            ].map(({ src, label, w, h }) => (
+              <div key={src} className="flex flex-col items-center gap-2 p-5" style={{
+                background: '#f0f4ff',
+                border: '1.5px solid rgba(55,114,255,0.15)',
+                borderRadius: 14,
+              }}>
+                <Image src={src} alt={label} width={w} height={h} className="object-contain max-h-10" />
+                <span className="text-xs" style={{ color: 'rgba(30,58,138,0.45)' }}>{label}</span>
+              </div>
+            ))}
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            {[
+              { src: '/logo/logo.png',   label: 'Знак цветной', w: 48, h: 64 },
+              { src: '/logo/logo3.png',  label: 'Компактный',   w: 130, h: 36 },
+            ].map(({ src, label, w, h }) => (
+              <div key={src} className="flex flex-col items-center gap-2 p-5" style={{
+                background: '#f0f4ff',
+                border: '1.5px solid rgba(55,114,255,0.15)',
+                borderRadius: 14,
+              }}>
+                <Image src={src} alt={label} width={w} height={h} className="object-contain max-h-12" />
+                <span className="text-xs" style={{ color: 'rgba(30,58,138,0.45)' }}>{label}</span>
+              </div>
+            ))}
           </div>
         </motion.div>
 

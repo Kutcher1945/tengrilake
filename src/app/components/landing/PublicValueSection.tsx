@@ -4,28 +4,21 @@ import { motion } from 'framer-motion';
 import { CheckCircle2 } from 'lucide-react';
 
 const values = [
-  "Более быстрое и обоснованное принятие решений",
-  "Повышение прозрачности государственного управления",
-  "Улучшение распределения государственных ресурсов",
-  "Усиление межведомственного сотрудничества",
-  "Укрепление доверия к государственным институтам",
+  "Задачи, файлы и аналитика в одной системе — без Excel по почте",
+  "Менеджер видит статус каждой задачи и загрузку команды в реальном времени",
+  "Отчёт, который раньше делали день — теперь запрос в ClickHouse",
+  "История каждого файла: кто загрузил, когда, к какой задаче",
+  "Геоданные и оперативная работа связаны: задача на карте Алматы",
+  "Data lineage: откуда взялись данные в дашборде — всегда известно",
 ];
+
+const DOT = 'radial-gradient(rgba(55,114,255,0.12) 1px,transparent 1px)';
 
 export default function PublicValueSection() {
   return (
-    <section className="bg-slate-950 py-24 relative overflow-hidden">
-      {/* Grid overlay */}
-      <div
-        className="absolute inset-0 opacity-[0.04]"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(6,182,212,1) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(6,182,212,1) 1px, transparent 1px)
-          `,
-          backgroundSize: '60px 60px',
-        }}
-      />
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent" />
+    <section className="py-24 relative overflow-hidden" style={{ background: '#0d1528' }}>
+      <div className="absolute inset-0" style={{ backgroundImage: DOT, backgroundSize: '28px 28px', pointerEvents: 'none' }}/>
+      <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(to right,transparent,rgba(55,114,255,0.25),transparent)' }}/>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div className="max-w-5xl mx-auto">
@@ -37,18 +30,17 @@ export default function PublicValueSection() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <span className="inline-block text-cyan-400 font-mono text-xs uppercase tracking-[0.3em] mb-4">
-              Общественная ценность
+            <span className="inline-block font-mono text-xs uppercase tracking-[0.3em] mb-4" style={{ color: '#3772ff' }}>
+              Что меняется
             </span>
             <h2 className="text-4xl md:text-5xl font-black text-white mb-4 leading-tight">
-              Укрепление{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-300">
-                прозрачности
-              </span>{' '}
-              и подотчётности
+              До и после{' '}
+              <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(to right,#3772ff,#93c5fd)' }}>
+                TengriLake
+              </span>
             </h2>
-            <p className="text-white/60 text-xl max-w-2xl mx-auto">
-              Обеспечивая интегрированные экосистемы данных, Tengrilake.AI поддерживает:
+            <p className="text-xl max-w-2xl mx-auto" style={{ color: 'rgba(193,211,255,0.6)' }}>
+              Конкретные изменения в работе сотрудников и менеджеров городского управления.
             </p>
           </motion.div>
 
@@ -56,14 +48,20 @@ export default function PublicValueSection() {
             {values.map((value, i) => (
               <motion.div
                 key={i}
-                className={`group flex items-center gap-4 p-5 border border-white/8 bg-white/[0.02] hover:border-cyan-400/30 hover:bg-white/[0.04] transition-all duration-300 ${i === 4 ? 'md:col-span-2 lg:col-span-1' : ''}`}
+                className="group flex items-start gap-4 p-5 transition-all duration-300"
+                style={{
+                  background: 'linear-gradient(145deg,#131d35,#1b2645)',
+                  border: '1.5px solid rgba(55,114,255,0.15)',
+                  borderRadius: 14,
+                }}
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: i * 0.09 }}
                 viewport={{ once: true }}
+                whileHover={{ y: -2, borderColor: 'rgba(55,114,255,0.4)' }}
               >
-                <CheckCircle2 className="h-5 w-5 text-cyan-400 flex-shrink-0" />
-                <span className="text-white/80 font-medium text-sm leading-snug">{value}</span>
+                <CheckCircle2 className="h-5 w-5 flex-shrink-0 mt-0.5" style={{ color: '#3772ff' }} />
+                <span className="font-medium text-sm leading-snug" style={{ color: 'rgba(232,238,255,0.85)' }}>{value}</span>
               </motion.div>
             ))}
           </div>
@@ -75,10 +73,12 @@ export default function PublicValueSection() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <div className="border-l-2 border-cyan-400/40 pl-6 py-2 text-left max-w-2xl mx-auto">
-              <p className="text-white/40 text-lg leading-relaxed italic">
-                Цифровая инфраструктура становится{' '}
-                <span className="text-white font-semibold not-italic">инфраструктурой государственной политики.</span>
+            <div className="pl-6 py-2 text-left max-w-2xl mx-auto" style={{ borderLeft: '2px solid rgba(55,114,255,0.4)' }}>
+              <p className="text-lg leading-relaxed italic" style={{ color: 'rgba(193,211,255,0.45)' }}>
+                Когда данные под контролем —{' '}
+                <span className="font-semibold not-italic" style={{ color: 'rgba(232,238,255,0.9)' }}>
+                  решения принимаются быстрее и точнее.
+                </span>
               </p>
             </div>
           </motion.div>

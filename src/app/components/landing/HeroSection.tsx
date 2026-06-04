@@ -8,23 +8,6 @@ import { HeroTitle } from '@/app/components/landing/Hero/HeroTitle';
 import { HeroButtons } from '@/app/components/landing/Hero/HeroButtons';
 import { StatsSection } from '@/app/components/landing/Hero/StatsSection';
 
-function HUDCorner({ position }: { position: 'tl' | 'tr' | 'bl' | 'br' }) {
-  const styles = {
-    tl: 'top-6 left-6 border-t-2 border-l-2',
-    tr: 'top-6 right-6 border-t-2 border-r-2',
-    bl: 'bottom-6 left-6 border-b-2 border-l-2',
-    br: 'bottom-6 right-6 border-b-2 border-r-2',
-  };
-  return (
-    <motion.div
-      className={`absolute w-8 h-8 border-cyan-400/50 ${styles[position]}`}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 1.2, duration: 0.6 }}
-    />
-  );
-}
-
 export default function HeroSection() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
@@ -41,61 +24,53 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section className="min-h-screen bg-black relative overflow-hidden">
-      {/* Background video */}
+    <section className="min-h-screen relative overflow-hidden" style={{ background: 'linear-gradient(160deg,#060b16,#0d1528 50%,#07101d)' }}>
+      {/* Video background */}
       <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover opacity-50"
+        autoPlay muted loop playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+        style={{ opacity: 0.18 }}
       >
         <source src="/video/hero-video.mp4" type="video/mp4" />
       </video>
 
-      {/* Dark gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/35 to-black/70" />
+      {/* Dot pattern */}
+      <div className="absolute inset-0" style={{
+        backgroundImage: 'radial-gradient(rgba(55,114,255,0.13) 1px,transparent 1px)',
+        backgroundSize: '28px 28px',
+        pointerEvents: 'none',
+      }}/>
 
-      {/* Animated grid overlay */}
-      <div
-        className="absolute inset-0 opacity-[0.06]"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(6, 182, 212, 1) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(6, 182, 212, 1) 1px, transparent 1px)
-          `,
-          backgroundSize: '60px 60px',
-        }}
-      />
+      {/* Blue radial glow center */}
+      <div className="absolute inset-0" style={{
+        background: 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(55,114,255,0.07) 0%, transparent 70%)',
+        pointerEvents: 'none',
+      }}/>
 
-      {/* Animated scan line */}
+      {/* Animated blue scan line */}
       <motion.div
-        className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/30 to-transparent pointer-events-none z-10"
+        className="absolute left-0 right-0 h-px pointer-events-none z-10"
+        style={{ background: 'linear-gradient(to right,transparent,rgba(55,114,255,0.3),transparent)' }}
         animate={{ y: ['0vh', '100vh'] }}
-        transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
+        transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
       />
 
-      {/* HUD corners */}
-      <HUDCorner position="tl" />
-      <HUDCorner position="tr" />
-      <HUDCorner position="bl" />
-      <HUDCorner position="br" />
-
-      {/* System status indicator */}
-      {/* <motion.div
-        className="absolute top-7 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-1.5 bg-black/70 border border-cyan-400/25 backdrop-blur-sm z-20"
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.0, duration: 0.5 }}
-      >
-        <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400" />
-        </span>
-        <span className="text-cyan-400/70 text-xs font-mono tracking-[0.25em]">
-          СИСТЕМА АКТИВНА
-        </span>
-      </motion.div> */}
+      {/* Corner accents */}
+      {(['tl','tr','bl','br'] as const).map(pos => (
+        <motion.div
+          key={pos}
+          className={`absolute w-8 h-8 ${
+            pos === 'tl' ? 'top-6 left-6 border-t-2 border-l-2' :
+            pos === 'tr' ? 'top-6 right-6 border-t-2 border-r-2' :
+            pos === 'bl' ? 'bottom-6 left-6 border-b-2 border-l-2' :
+                           'bottom-6 right-6 border-b-2 border-r-2'
+          }`}
+          style={{ borderColor: 'rgba(55,114,255,0.4)' }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2, duration: 0.6 }}
+        />
+      ))}
 
       {/* Main content */}
       <motion.div
@@ -111,11 +86,7 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
           >
-            <AnimatedIcon
-              isHovered={isHovered}
-              setIsHovered={setIsHovered}
-              mousePosition={mousePosition}
-            />
+            <AnimatedIcon isHovered={isHovered} setIsHovered={setIsHovered} mousePosition={mousePosition} />
           </motion.div>
 
           <motion.div
@@ -127,14 +98,15 @@ export default function HeroSection() {
           </motion.div>
 
           <motion.p
-            className="text-lg md:text-xl text-white/55 mb-12 max-w-3xl mx-auto leading-relaxed font-light tracking-wide"
+            className="text-lg md:text-xl mb-12 max-w-3xl mx-auto leading-relaxed font-light"
+            style={{ color: 'rgba(193,211,255,0.6)' }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.5 }}
           >
-            Tengrilake.AI позволяет государственным институтам объединить разрозненные системы данных
-            в единую защищённую масштабируемую платформу, обеспечивающую стратегическое планирование,
-            оптимизацию государственных услуг и принятие решений на основе данных.
+            TengriLake.AI — платформа управления данными для городского управления Алматы.
+            Задачи сотрудников, прикреплённые файлы и геоданные автоматически проходят
+            через ETL-пайплайн и превращаются в аналитику, которой можно доверять.
           </motion.p>
 
           <motion.div
@@ -156,11 +128,10 @@ export default function HeroSection() {
         animate={{ opacity: 1 }}
         transition={{ delay: 1.6 }}
       >
-        {/* <span className="text-white/25 text-xs font-mono tracking-[0.3em]">ПРОКРУТИТЬ</span> */}
         <motion.div
-          className="w-px h-10 bg-gradient-to-b from-cyan-400/50 to-transparent"
+          className="w-px h-10"
+          style={{ background: 'linear-gradient(to bottom,rgba(55,114,255,0.5),transparent)', originY: 0 }}
           animate={{ scaleY: [0, 1, 0] }}
-          style={{ originY: 0 }}
           transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
         />
       </motion.div>

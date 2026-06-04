@@ -1,15 +1,22 @@
 import { motion } from 'framer-motion';
 
 const stats = [
-  { number: '50+', label: 'Интеграций систем' },
-  { number: '99.9%', label: 'Надёжность платформы' },
-  { number: '3', label: 'Уровня развёртывания' },
+  { number: '7',    label: 'Этапов пайплайна' },
+  { number: 'S3+PG+CH', label: 'Хранилищ данных' },
+  { number: '100%', label: 'On-premise' },
 ];
 
 export function StatsSection() {
   return (
     <motion.div
-      className="mt-20 flex flex-col md:flex-row justify-center items-stretch max-w-2xl mx-auto border border-white/10 divide-y md:divide-y-0 md:divide-x divide-white/10"
+      className="mt-20 flex flex-col md:flex-row justify-center items-stretch max-w-2xl mx-auto"
+      style={{
+        border: '1.5px solid rgba(55,114,255,0.2)',
+        borderRadius: 18,
+        background: 'linear-gradient(135deg,rgba(19,29,53,0.8),rgba(27,38,69,0.6))',
+        backdropFilter: 'blur(8px)',
+        overflow: 'hidden',
+      }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 1.0, duration: 0.6 }}
@@ -17,12 +24,15 @@ export function StatsSection() {
       {stats.map((stat, index) => (
         <div
           key={index}
-          className="flex-1 text-center px-8 py-5 hover:bg-white/[0.03] transition-colors duration-200 group"
+          className="flex-1 text-center px-8 py-5"
+          style={{
+            borderRight: index < stats.length - 1 ? '1px solid rgba(55,114,255,0.15)' : undefined,
+          }}
         >
-          <div className="text-2xl font-mono font-bold text-cyan-400 mb-1 group-hover:text-cyan-300 transition-colors duration-200">
+          <div className="text-xl font-black mb-1" style={{ color: '#3772ff', letterSpacing: '-0.02em' }}>
             {stat.number}
           </div>
-          <div className="text-white/35 text-xs font-mono tracking-[0.2em] uppercase">
+          <div className="text-xs font-medium uppercase tracking-widest" style={{ color: 'rgba(193,211,255,0.45)' }}>
             {stat.label}
           </div>
         </div>

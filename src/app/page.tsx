@@ -7,6 +7,7 @@ import LandingNav from '@/app/components/landing/LandingNav';
 import HeroSection from '@/app/components/landing/HeroSection';
 import ProblemSection from '@/app/components/landing/ProblemSection';
 import SolutionSection from '@/app/components/landing/SolutionSection';
+import FeaturesSection from '@/app/components/landing/FeaturesSection';
 import ArchitectureSection from '@/app/components/landing/ArchitectureSection';
 import UseCasesSection from '@/app/components/landing/UseCasesSection';
 import DifferentiationSection from '@/app/components/landing/DifferentiationSection';
@@ -30,6 +31,7 @@ export default function Home() {
       <HeroSection />
       <ProblemSection />
       <SolutionSection />
+      <FeaturesSection />
       <ArchitectureSection />
       <UseCasesSection />
       <DifferentiationSection />

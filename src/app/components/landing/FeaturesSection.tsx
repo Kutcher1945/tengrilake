@@ -1,371 +1,146 @@
 'use client';
 
-import { motion, Variants } from 'framer-motion';
-import { useRef, useMemo } from 'react';
-import { 
-  Database, 
-  Cloud, 
-  Workflow, 
-  GitBranch, 
-  Server, 
-  Cpu,
-  Layers,
-  Zap
-} from 'lucide-react';
+import { motion } from 'framer-motion';
+import {
+  SiApacheairflow, SiN8N, SiPostgresql, SiMinio, SiClickhouse, SiDbt,
+} from 'react-icons/si';
 
-interface Technology {
-  name: string;
-  category: string;
-  icon: React.ComponentType<{ className?: string }>;
-  description: string;
-  gradient: string;
-  features: string[];
-}
-
-const technologies: Technology[] = [
+const technologies = [
   {
-    name: 'MinIO S3',
-    category: 'Object Storage',
-    icon: Database,
-    description: 'High-performance object storage for file uploads and data archiving',
-    gradient: 'from-blue-500 to-blue-600',
-    features: ['Scalable Storage', 'S3 Compatible', 'High Throughput']
+    Icon: SiMinio,
+    name: 'S3 / MinIO',
+    category: 'Raw Storage',
+    color: '#C72E49',
+    description: 'Все файлы задач — Excel, PDF, CSV, GeoJSON — хранятся в иммутабельном объектном хранилище. Полная история загрузок, presigned URL для безопасного доступа.',
+    features: ['S3 Compatible API', 'Presigned URL доступ', 'tasktracker-cdn bucket'],
   },
   {
+    Icon: SiApacheairflow,
     name: 'Apache Airflow',
-    category: 'Workflow Orchestration',
-    icon: Workflow,
-    description: 'Intelligent ETL pipeline orchestration with dynamic DAG generation',
-    gradient: 'from-emerald-500 to-emerald-600',
-    features: ['DAG Management', 'Parallel Processing', 'Error Handling']
+    category: 'ETL Orchestration',
+    color: '#017CEE',
+    description: 'Читает файлы из S3, парсит через pandas/geopandas и загружает в Dirty DB. DAG-ориентированная оркестрация с retry-логикой и мониторингом.',
+    features: ['DAG-оркестрация', 'Pandas/GeoPandas парсинг', 'Scheduling и retry'],
   },
   {
+    Icon: SiClickhouse,
     name: 'ClickHouse',
-    category: 'Analytics Database',
-    icon: Server,
-    description: 'Lightning-fast columnar database optimized for OLAP queries',
-    gradient: 'from-purple-500 to-purple-600',
-    features: ['Columnar Storage', 'Real-time Analytics', 'Compression']
+    category: 'Analytics Mart',
+    color: '#FFCC01',
+    description: 'Аналитические витрины для BI-дашбордов: агрегации за миллисекунды, поддержка Superset и Metabase. Данные поступают из Clean DB после проверки dbt.',
+    features: ['OLAP колоночная БД', 'Агрегации за мс', 'BI · Superset · Metabase'],
   },
   {
-    name: 'Apache Kafka',
-    category: 'Event Streaming',
-    icon: GitBranch,
-    description: 'Real-time data streaming platform for microservice communication',
-    gradient: 'from-amber-500 to-amber-600',
-    features: ['Event Streaming', 'Low Latency', 'Fault Tolerant']
+    Icon: SiN8N,
+    name: 'n8n',
+    category: 'Low-code Automation',
+    color: '#EA4B71',
+    description: 'Визуальные воркфлоу для event-driven интеграций. Webhooks от Task Tracker, уведомления в Telegram, синхронизация с внешними API города.',
+    features: ['Webhooks из Task Tracker', 'Telegram уведомления', 'Event-driven триггеры'],
   },
   {
-    name: 'PostgreSQL',
-    category: 'Relational Database',
-    icon: Layers,
-    description: 'Advanced relational database for transactional data processing',
-    gradient: 'from-blue-600 to-blue-700',
-    features: ['ACID Compliant', 'JSON Support', 'Extensions']
+    Icon: SiPostgresql,
+    name: 'PostgreSQL / PostGIS',
+    category: 'Dirty · Clean · GIS',
+    color: '#336791',
+    description: 'Три роли: Dirty DB (сырые данные), Clean DB (после dbt-валидации), PostGIS Mart (пространственные витрины для карты Алматы в QGIS, Leaflet, MapLibre).',
+    features: ['Dirty → Clean слои', 'PostGIS пространственный анализ', 'SRID 4326 геоданные'],
   },
   {
-    name: 'PostGIS',
-    category: 'Geospatial Database',
-    icon: Cloud,
-    description: 'Spatial database extension for geographic object support',
-    gradient: 'from-teal-500 to-teal-600',
-    features: ['Spatial Queries', 'GIS Functions', 'Geometry Types']
-  }
+    Icon: SiDbt,
+    name: 'dbt / Validation',
+    category: 'Data Quality',
+    color: '#FF694A',
+    description: 'SQL-модели трансформируют данные из Dirty в Clean DB. Great Expectations проверяет качество и дедуплицирует. Алерты при нарушении правил.',
+    features: ['Dirty → Clean трансформация', 'Great Expectations checks', 'Data lineage tracking'],
+  },
 ];
 
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      delayChildren: 0.3,
-      staggerChildren: 0.1
-    }
-  }
-};
+const DOT = 'radial-gradient(rgba(55,114,255,0.12) 1px,transparent 1px)';
 
-const cardVariants: Variants = {
-  hidden: { 
-    y: 60, 
-    opacity: 0,
-    scale: 0.9
-  },
-  visible: {
-    y: 0,
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 0.6,
-      ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number]
-    }
-  },
-  hover: {
-    y: -10,
-    scale: 1.02,
-    transition: {
-      type: "spring",
-      stiffness: 300,
-      damping: 20
-    }
-  }
-};
-
-export default function TechnologyShowcase() {
-  const ref = useRef(null);
-
-  // Generate consistent floating particle positions
-  const floatingParticles = useMemo(() => {
-    return Array.from({ length: 15 }, (_, i) => {
-      const seed = i * 137.508; // Golden angle for good distribution
-      return {
-        left: ((seed % 360) / 360) * 100,
-        top: ((seed * 1.618 % 360) / 360) * 100,
-        duration: 4 + (i % 3),
-        delay: (i % 5) * 0.4,
-        scale: 0.5 + (i % 3) * 0.23
-      };
-    });
-  }, []);
-
-  // Generate consistent card particle positions for each technology
-  const cardParticles = useMemo(() => {
-    return technologies.map((_, techIndex) => 
-      Array.from({ length: 4 }, (_, particleIndex) => {
-        const seed = techIndex * 47 + particleIndex * 23;
-        return {
-          left: ((seed % 100)),
-          top: ((seed * 1.3 % 100)),
-          delay: particleIndex * 0.2
-        };
-      })
-    );
-  }, []);
-
+export default function FeaturesSection() {
   return (
-    <section className="py-32 bg-black relative overflow-hidden" ref={ref}>
-      {/* Grid overlay */}
-      <div
-        className="absolute inset-0 opacity-[0.04]"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(6,182,212,1) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(6,182,212,1) 1px, transparent 1px)
-          `,
-          backgroundSize: '60px 60px',
-        }}
-      />
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent" />
-
-      {/* Floating particles - using consistent positions */}
-      {floatingParticles.map((particle, i) => (
-        <motion.div
-          key={i}
-          className="absolute w-1 h-1 bg-cyan-400 rounded-full opacity-30"
-          style={{
-            left: `${particle.left}%`,
-            top: `${particle.top}%`,
-          }}
-          animate={{
-            y: [-15, 15, -15],
-            opacity: [0.2, 0.8, 0.2],
-            scale: [particle.scale, particle.scale + 0.7, particle.scale]
-          }}
-          transition={{
-            duration: particle.duration,
-            repeat: Infinity,
-            delay: particle.delay,
-            ease: [0.4, 0.0, 0.6, 1] as [number, number, number, number]
-          }}
-        />
-      ))}
-
+    <section id="stack" className="py-24 relative overflow-hidden scroll-mt-16" style={{ background: '#0d1528' }}>
+      <div className="absolute inset-0" style={{ backgroundImage: DOT, backgroundSize: '28px 28px', pointerEvents: 'none' }}/>
+      <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(to right,transparent,rgba(55,114,255,0.25),transparent)' }}/>
+      <div className="absolute inset-0" style={{
+        background: 'radial-gradient(ellipse 60% 40% at 50% 50%,rgba(55,114,255,0.05),transparent)',
+        pointerEvents: 'none',
+      }}/>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-        {/* Section Header */}
         <motion.div
-          className="text-center mb-20"
+          className="text-center mb-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.7 }}
           viewport={{ once: true }}
         >
-          <motion.div
-            className="inline-flex items-center justify-center mb-6"
-            initial={{ scale: 0, rotate: -180 }}
-            whileInView={{ scale: 1, rotate: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, type: "spring", stiffness: 200 }}
-            viewport={{ once: true }}
-          >
-            <div className="border border-cyan-400/30 bg-cyan-400/5 p-4">
-              <Cpu className="h-8 w-8 text-cyan-400" />
-            </div>
-          </motion.div>
-
-          <span className="inline-block text-cyan-400 font-mono text-xs uppercase tracking-[0.3em] mb-4">
-            Технологии
+          <span className="inline-block font-mono text-xs uppercase tracking-[0.3em] mb-4" style={{ color: '#3772ff' }}>
+            Технологический стек
           </span>
-          <h2 className="text-5xl md:text-6xl font-black text-white mb-6 leading-tight">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-white to-blue-300">
-              Powered by
+          <h2 className="text-4xl md:text-5xl font-black text-white mb-4 leading-tight">
+            Открытые инструменты.{' '}
+            <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(to right,#3772ff,#93c5fd)' }}>
+              Проверенные в бою.
             </span>
-            {' '}
-            <span className="text-white">Modern Technology</span>
           </h2>
-
-          <p className="text-xl md:text-2xl text-white/50 max-w-3xl mx-auto leading-relaxed">
-            Our platform leverages industry-leading technologies to deliver 
-            unparalleled performance, scalability, and reliability.
+          <p className="text-xl max-w-2xl mx-auto" style={{ color: 'rgba(193,211,255,0.55)' }}>
+            TengriLake.AI построен на open-source инструментах, которые используют ведущие data-платформы мира. Никакого vendor lock-in.
           </p>
         </motion.div>
 
-        {/* Technology Grid */}
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-        >
-          {technologies.map((tech, index) => {
-            const Icon = tech.icon;
-            const particlePositions = cardParticles[index];
-            
-            return (
-              <motion.div
-                key={index}
-                className="relative group"
-                variants={cardVariants}
-                whileHover="hover"
-              >
-                {/* Card glow effect */}
-                <motion.div
-                  className="absolute -inset-0.5 bg-cyan-400/10 blur opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                />
-
-                <div className="relative bg-white/[0.02] border border-white/8 p-8 group-hover:border-cyan-400/30 transition-all duration-300 overflow-hidden">
-                  {/* Floating particles on hover - using consistent positions */}
-                  {particlePositions.map((particle, particleIndex) => (
-                    <motion.div
-                      key={particleIndex}
-                      className="absolute w-1 h-1 bg-cyan-400 rounded-full opacity-0 group-hover:opacity-100"
-                      style={{
-                        left: `${particle.left}%`,
-                        top: `${particle.top}%`,
-                      }}
-                      animate={{
-                        scale: [0, 1, 0],
-                        opacity: [0, 0.8, 0],
-                        y: [-10, -25, -40]
-                      }}
-                      transition={{
-                        duration: 1.5,
-                        delay: particle.delay,
-                        repeat: Infinity,
-                        ease: [0.4, 0.0, 0.6, 1] as [number, number, number, number]
-                      }}
-                    />
-                  ))}
-
-                  {/* Header */}
-                  <div className="text-center mb-6">
-                    <motion.div
-                      className={`bg-gradient-to-r ${tech.gradient} p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center`}
-                      whileHover={{ 
-                        scale: 1.1, 
-                        rotate: 5,
-                        boxShadow: "0 20px 40px rgba(59, 130, 246, 0.3)"
-                      }}
-                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    >
-                      <Icon className="h-8 w-8 text-white" />
-                    </motion.div>
-                    
-                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-cyan-300 transition-colors duration-300">
-                      {tech.name}
-                    </h3>
-
-                    <div className="text-cyan-400/80 text-xs font-mono uppercase tracking-widest border border-cyan-400/20 px-3 py-1 inline-block">
-                      {tech.category}
-                    </div>
-                  </div>
-
-                  {/* Description */}
-                  <p className="text-white/70 text-center leading-relaxed mb-6">
-                    {tech.description}
-                  </p>
-
-                  {/* Features */}
-                  <div className="space-y-2">
-                    {tech.features.map((feature, featureIndex) => (
-                      <motion.div
-                        key={featureIndex}
-                        className="flex items-center gap-3"
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ 
-                          duration: 0.4, 
-                          delay: index * 0.1 + featureIndex * 0.05 
-                        }}
-                        viewport={{ once: true }}
-                      >
-                        <div className="w-1.5 h-1.5 bg-cyan-400 flex-shrink-0" />
-                        <span className="text-white/80 text-sm">{feature}</span>
-                      </motion.div>
-                    ))}
-                  </div>
-
-                  {/* Interactive bottom accent - only show on hover */}
-                  <motion.div
-                    className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-cyan-500 to-blue-300"
-                    initial={{ scaleX: 0, opacity: 0 }}
-                    whileHover={{ scaleX: 1, opacity: 1 }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
-                  />
-
-                  {/* Corner accent */}
-                  <motion.div
-                    className="absolute top-4 right-4 w-1.5 h-1.5 bg-cyan-400"
-                    animate={{
-                      scale: [1, 1.5, 1],
-                      opacity: [0.5, 1, 0.5]
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: [0.4, 0.0, 0.6, 1] as [number, number, number, number]
-                    }}
-                  />
-                </div>
-              </motion.div>
-            );
-          })}
-        </motion.div>
-
-        {/* Bottom CTA */}
-        <motion.div
-          className="text-center mt-20"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          viewport={{ once: true }}
-        >
-          <motion.div
-            className="inline-flex items-center gap-3 border border-white/10 hover:border-cyan-400/30 px-8 py-4 text-white/60 hover:text-white/80 text-base transition-colors duration-200"
-            whileHover={{ 
-              scale: 1.05, 
-              backgroundColor: "rgba(255, 255, 255, 0.1)",
-              transition: { duration: 0.2 }
-            }}
-          >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {technologies.map((tech, i) => (
             <motion.div
-              animate={{ rotate: [0, 360] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+              key={i}
+              className="group relative p-6 transition-all duration-300"
+              style={{
+                background: 'linear-gradient(145deg,#131d35,#1b2645)',
+                border: '1.5px solid rgba(55,114,255,0.18)',
+                borderRadius: 18,
+              }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: i * 0.08 }}
+              viewport={{ once: true }}
+              whileHover={{ y: -5, borderColor: `${tech.color}55`, boxShadow: `0 16px 40px ${tech.color}20` }}
             >
-              <Zap className="h-5 w-5 text-cyan-400" />
+              <div className="flex items-center gap-4 mb-5">
+                <div className="w-12 h-12 flex items-center justify-center flex-shrink-0" style={{
+                  background: `${tech.color}18`,
+                  border: `1.5px solid ${tech.color}35`,
+                  borderRadius: 12,
+                }}>
+                  <tech.Icon size={22} style={{ color: tech.color }} />
+                </div>
+                <div>
+                  <h3 className="text-base font-black text-white leading-tight">{tech.name}</h3>
+                  <span className="text-xs font-semibold px-2 py-0.5 mt-1 inline-block" style={{
+                    background: `${tech.color}15`, color: tech.color,
+                    border: `1px solid ${tech.color}28`, borderRadius: 6,
+                  }}>{tech.category}</span>
+                </div>
+              </div>
+
+              <p className="text-sm leading-relaxed mb-5" style={{ color: 'rgba(193,211,255,0.6)' }}>
+                {tech.description}
+              </p>
+
+              <div className="flex flex-col gap-2">
+                {tech.features.map((f, j) => (
+                  <div key={j} className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: tech.color }} />
+                    <span className="text-xs font-medium" style={{ color: 'rgba(193,211,255,0.7)' }}>{f}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="absolute bottom-0 left-4 right-4 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{ background: `linear-gradient(to right,transparent,${tech.color},transparent)` }}/>
             </motion.div>
-            <span>Enterprise-grade infrastructure meets intelligent automation</span>
-          </motion.div>
-        </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   );
